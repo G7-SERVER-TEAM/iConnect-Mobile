@@ -323,7 +323,7 @@ export default function HomeScreen() {
               name="qrcode"
             />
           </View>
-          <TouchableOpacity style={{ flex: 1, alignItems: "center" }}>
+          <TouchableOpacity style={{ flex: 1, alignItems: "center" }} onPress={() => navigation.navigate("History")}>
             <Ionicons
               name="document-text"
               style={{ color: themeColors.text, fontSize: 25 }}
