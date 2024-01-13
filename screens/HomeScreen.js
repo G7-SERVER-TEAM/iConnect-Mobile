@@ -305,23 +305,14 @@ export default function HomeScreen() {
               Home
             </Text>
           </TouchableOpacity>
-          <View
-            style={{
-              width: 50,
-              height: 50,
-              alignItems: "center",
-              justifyContent: "center",
-              backgroundColor: themeColors.text,
-              borderRadius: 50,
-            }}
-          >
-            <FontAwesome
-              style={{
-                color: "white",
-                fontSize: 24,
-              }}
-              name="qrcode"
-            />
+          <View className="absolute bottom-10 right-[42.5%] flex items-center justify-center rounded-full border-4 border-black h-[75px] w-[75px]" style={{backgroundColor: themeColors.text}}>
+              <FontAwesome
+                  style={{
+                      color: "white",
+                      fontSize: 24,
+                  }}
+                  name="qrcode"
+              />
           </View>
           <TouchableOpacity style={{ flex: 1, alignItems: "center" }} onPress={() => navigation.navigate("History")}>
             <Ionicons

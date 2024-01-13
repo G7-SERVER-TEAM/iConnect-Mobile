@@ -8,7 +8,6 @@ import {
   Ionicons,
   MaterialCommunityIcons,
 } from "@expo/vector-icons";
-import NewsCard from "../components/newsCard";
 import { FlatList } from "react-native";
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -132,7 +131,7 @@ const HistoryScreen = () => {
             </View>
 
             <View className="bg-white flex-row h-[10vh] rounded-t-[25px] items-center justify-around">
-                <TouchableOpacity className="flex items-center">
+                <TouchableOpacity className="flex items-center" onPress={() => navigation.navigate("Home")}>
                     <AntDesign
                         name="home"
                         style={{ color: themeColors.text, fontSize: 25 }}
@@ -141,7 +140,7 @@ const HistoryScreen = () => {
                         Home
                     </Text>
                 </TouchableOpacity>
-                <TouchableOpacity className="absolute bottom-12 right-[42.5%] flex items-center justify-center rounded-full border-4 border-black h-[75px] w-[75px]" style={{backgroundColor: themeColors.text}}>
+                <View className="absolute bottom-10 right-[42.5%] flex items-center justify-center rounded-full border-4 border-black h-[75px] w-[75px]" style={{backgroundColor: themeColors.text}}>
                     <FontAwesome
                         style={{
                             color: "white",
@@ -149,8 +148,8 @@ const HistoryScreen = () => {
                         }}
                         name="qrcode"
                     />
-                </TouchableOpacity>
-                <TouchableOpacity className="flex items-center">
+                </View>
+                <TouchableOpacity className="flex items-center" onPress={() => navigation.navigate("History")}>
                     <Ionicons
                         name="document-text"
                         style={{ color: themeColors.text, fontSize: 25 }}
