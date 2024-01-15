@@ -11,6 +11,7 @@ import {
 } from "@expo/vector-icons";
 import NewsCard from "../components/newsCard";
 import { FlatList } from "react-native";
+import BottomTab from "../components/bottomTab";
 
 export default function HomeScreen() {
   const navigation = useNavigation();
@@ -279,57 +280,10 @@ export default function HomeScreen() {
         </TouchableOpacity>
 
         {/* menu bar  */}
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-around",
-            alignItems: "center",
-            backgroundColor: "white",
-            paddingVertical: 20,
-            marginTop: 10,
-            justifyContent: "center",
-          }}
-        >
-          <TouchableOpacity style={{ flex: 1, alignItems: "center" }}>
-            <AntDesign
-              name="home"
-              style={{ color: themeColors.text, fontSize: 25 }}
-            />
-            <Text
-              style={{
-                color: themeColors.text,
-                fontWeight: "bold",
-                marginTop: 5,
-              }}
-            >
-              Home
-            </Text>
-          </TouchableOpacity>
-          <View className="absolute bottom-10 right-[42.5%] flex items-center justify-center rounded-full border-4 border-black h-[75px] w-[75px]" style={{backgroundColor: themeColors.text}}>
-              <FontAwesome
-                  style={{
-                      color: "white",
-                      fontSize: 24,
-                  }}
-                  name="qrcode"
-              />
-          </View>
-          <TouchableOpacity style={{ flex: 1, alignItems: "center" }} onPress={() => navigation.navigate("History")}>
-            <Ionicons
-              name="document-text"
-              style={{ color: themeColors.text, fontSize: 25 }}
-            />
-            <Text
-              style={{
-                color: themeColors.text,
-                fontWeight: "bold",
-                marginTop: 5,
-              }}
-            >
-              History
-            </Text>
-          </TouchableOpacity>
-        </View>
+        <BottomTab 
+          onPress={()=> navigation.navigate("Home")}
+          onPress2={()=> navigation.navigate("History")} 
+        />
       </View>
     </SafeAreaView>
   );

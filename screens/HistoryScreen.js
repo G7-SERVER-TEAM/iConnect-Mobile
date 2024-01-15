@@ -1,19 +1,41 @@
 import React, {useState} from 'react';
-import { View, Text, TouchableOpacity, Image } from 'react-native'
+import { View, Text, TouchableOpacity, Image, FlatList } from 'react-native'
 import { themeColors } from "../theme";
 import { useNavigation } from "@react-navigation/native";
-import {
-  AntDesign,
-  FontAwesome,
-  Ionicons,
-  MaterialCommunityIcons,
-} from "@expo/vector-icons";
-import { FlatList } from "react-native";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { SafeAreaView } from 'react-native-safe-area-context';
+import BottomTab from '../components/bottomTab';
+import HistoriesCard from '../components/historiesCard';
 
 const HistoryScreen = () => {
     const navigation = useNavigation();
-    
+    const historiesData = [
+        {
+            id: "1",
+            name:"Future Park Rangsit",
+            date:"21/10/2023",
+            timestamp: {
+                start:"09:30:10 p.m.",
+                end:"12:30:00 p.m.",
+            },
+            license_plate:"1กก1111",
+            price: "60",
+            duration: "3",
+        },
+        {
+            id: "2",
+            name:"Central World",
+            date:"20/10/2023",
+            timestamp: {
+                start:"16:00:30 p.m.",
+                end:"18:00:10 p.m.",
+            },
+            license_plate:"1กข1234",
+            price: "70",
+            duration: "3",
+        }
+    ];
+
     return (
         <SafeAreaView className="flex-1 gap-3" style={{backgroundColor: themeColors.bg}}>
             <View 
@@ -60,7 +82,16 @@ const HistoryScreen = () => {
                 <Text className="text-[24px] font-bold ml-5" style={{color: themeColors.text}}>My History</Text>
             </View>
             <View className="flex-1 items-center">
-                <View 
+                <FlatList
+                    data= {historiesData}
+                    keyExtractor={(item) => item.id}
+                    renderItem={({ item }) => (
+                        <HistoriesCard data={item} />
+                    )} 
+                />
+            </View>
+            {/* <View className="flex-1 items-center"> */}
+                {/* <View 
                 className=
                     "bg-white flex rounded-[25px] h-[15vh] w-[93vw] px-[22px] pt-[16px] mb-5"
                     >
@@ -127,40 +158,15 @@ const HistoryScreen = () => {
                                 </View> 
                             </View>
                         </View>
-                </View>
-            </View>
-
-            <View className="bg-white flex-row h-[10vh] rounded-t-[25px] items-center justify-around">
-                <TouchableOpacity className="flex items-center" onPress={() => navigation.navigate("Home")}>
-                    <AntDesign
-                        name="home"
-                        style={{ color: themeColors.text, fontSize: 25 }}
-                    />
-                    <Text className="text-[16px] font-bold" style={{color: themeColors.text}}>
-                        Home
-                    </Text>
-                </TouchableOpacity>
-                <View className="absolute bottom-10 right-[42.5%] flex items-center justify-center rounded-full border-4 border-black h-[75px] w-[75px]" style={{backgroundColor: themeColors.text}}>
-                    <FontAwesome
-                        style={{
-                            color: "white",
-                            fontSize: 24,
-                        }}
-                        name="qrcode"
-                    />
-                </View>
-                <TouchableOpacity className="flex items-center" onPress={() => navigation.navigate("History")}>
-                    <Ionicons
-                        name="document-text"
-                        style={{ color: themeColors.text, fontSize: 25 }}
-                    />
-                    <Text className="text-[16px] font-bold" style={{color: themeColors.text}}>
-                        History
-                    </Text>
-                </TouchableOpacity>
-            </View>
+                </View> */}
+            {/* </View> */}
+            <BottomTab 
+                onPress={()=> navigation.navigate("Home")}
+                onPress2={()=> navigation.navigate("History")} 
+            />
         </SafeAreaView>
     )
 }
+
 
 export default HistoryScreen
