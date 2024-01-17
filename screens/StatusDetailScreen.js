@@ -12,24 +12,8 @@ import {
 import NewsCard from "../components/newsCard";
 import { FlatList } from "react-native";
 
-export default function HomeScreen() {
+export default function StatusDetailScreen() {
   const navigation = useNavigation();
-
-  const newsData = [
-    {
-      id: "1",
-      title: "Amazing Thailand Countdown 2024",
-      description:
-        "ไอคอนสยาม เตรียมเคาต์ดาวน์สะกดโลก “Amazing Thailand Countdown 2024”",
-      image: "/Users/sittipaksrisawas/Desktop/TestApp/assets/images/new1.jpeg",
-    },
-    {
-      id: "2",
-      title: "Breaking News 2",
-      description: "This is the description of breaking news 2.",
-      image: "/Users/sittipaksrisawas/Desktop/TestApp/assets/images/new1.jpeg",
-    },
-  ];
 
   return (
     <SafeAreaView
@@ -41,6 +25,7 @@ export default function HomeScreen() {
           paddingTop: 15,
           paddingLeft: 10,
           paddingRight: 10,
+          paddingBottom: 20,
           backgroundColor: "white",
           borderBottomLeftRadius: 30,
           borderBottomRightRadius: 30,
@@ -67,7 +52,7 @@ export default function HomeScreen() {
                 alignContent: "center",
               }}
             >
-              HOME
+              Status Detail
             </Text>
           </TouchableOpacity>
 
@@ -93,71 +78,13 @@ export default function HomeScreen() {
             />
           </TouchableOpacity>
         </View>
-
-        <View className="mt-5">
-          <Text
-            className="font-bold"
-            style={{
-              color: themeColors.text,
-              fontSize: 20,
-              alignContent: "center",
-              marginLeft: 10,
-              marginBottom: 20,
-            }}
-          >
-            {" "}
-            Hi!, Server G7
-          </Text>
-        </View>
-      </View>
-
-      <View style={{ marginBottom: 5 }}>
-        <Text
-          style={{
-            fontWeight: "bold",
-            color: themeColors.text,
-            fontSize: 20,
-            alignSelf: "flex-start",
-            marginTop: 20,
-            marginBottom: 10,
-            marginLeft: 25,
-          }}
-        >
-          News
-        </Text>
-        <FlatList
-          style={{ marginLeft: 25 }}
-          data={newsData}
-          keyExtractor={(item) => item.id}
-          horizontal
-          showsHorizontalScrollIndicator={false} // Optional: hide horizontal scroll indicator
-          renderItem={({ item }) => (
-            <NewsCard
-              news={item}
-              onPress={() => navigation.navigate("NewsDetail", { news: item })}
-            />
-          )}
-        />
       </View>
 
       <View>
-        <Text
-          style={{
-            fontWeight: "bold",
-            color: themeColors.text,
-            fontSize: 20,
-            alignSelf: "flex-start",
-            marginTop: 0,
-            marginBottom: 10,
-            marginLeft: 25,
-          }}
-        >
-          Parking Status
-        </Text>
         <TouchableOpacity
-          onPress={() => navigation.navigate("StatusDetail")}
           style={{
             backgroundColor: "white",
+            marginTop: 40,
             marginBottom: 20,
             marginLeft: 25,
             marginRight: 25,
@@ -185,9 +112,11 @@ export default function HomeScreen() {
               width: "85%",
               alignSelf: "center",
               marginTop: 5,
+              flexDirection: "row",
+              justifyContent: "start"
             }}
           />
-
+          
           <Text
             style={{
               alignSelf: "center",
@@ -197,9 +126,9 @@ export default function HomeScreen() {
               fontWeight: "bold",
             }}
           >
-            LICENSE PLATE : 1กข1111
+            40
           </Text>
-
+          <Text>BATHS</Text>
           <View
             style={{ justifyContent: "space-between", flexDirection: "row" }}
           >
@@ -224,7 +153,6 @@ export default function HomeScreen() {
               11:30:00 a.m.
             </Text>
           </View>
-
           <View
             style={{ justifyContent: "space-between", flexDirection: "row" }}
           >
@@ -249,7 +177,6 @@ export default function HomeScreen() {
               2 hrs 00 mins
             </Text>
           </View>
-
           <View
             style={{ justifyContent: "space-between", flexDirection: "row" }}
           >
