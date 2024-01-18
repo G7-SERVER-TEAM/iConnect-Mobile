@@ -54,7 +54,7 @@ export default function SignUpScreen() {
         <View className="form space-y-2">
             <TextInput
                 className="p-4 bg-gray-100 text-gray-700 rounded-2xl mb-3"
-                placeholder='Email'
+                placeholder='Username'
             />
             <View className="p-4 bg-gray-100 text-gray-700 rounded-2xl mb-3" style={{flexDirection: 'row'}}>
                 <TextInput

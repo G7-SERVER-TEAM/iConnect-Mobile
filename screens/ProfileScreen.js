@@ -12,6 +12,7 @@ import {
 } from "@expo/vector-icons";
 import NewsCard from "../components/newsCard";
 import { FlatList } from "react-native";
+import { Bold } from "react-native-feather";
 
 export default function ProfileScreen() {
   const navigation = useNavigation();
@@ -101,18 +102,60 @@ export default function ProfileScreen() {
               Student
             </Text>
           </View>
+
           <View style={{ alignSelf: "start" }}>
             <Text
               style={{
                 fontSize: 18,
                 color: themeColors.text,
                 fontWeight: "bold",
-                marginBottom: 20,
+                marginBottom: 15,
               }}
             >
               Personal Information
             </Text>
+            <View style={{ flexDirection: "row", marginLeft: 40 }}>
+              <Text style={{ fontWeight: "bold" }}>Age</Text>
+              <Text style={{ marginLeft: 100 }}>23</Text>
+            </View>
+            <View
+              style={{ flexDirection: "row", marginLeft: 40, paddingTop: 10 }}
+            >
+              <Text style={{ fontWeight: "bold" }}>Birth Date</Text>
+              <Text style={{ marginLeft: 55 }}>01-01-2000</Text>
+            </View>
+            <View
+              style={{ flexDirection: "row", marginLeft: 40, paddingTop: 10 }}
+            >
+              <Text style={{ fontWeight: "bold" }}>Phone Number</Text>
+              <Text style={{ marginLeft: 23 }}>012-345-6789</Text>
+            </View>
+            <View
+              style={{
+                flexDirection: "row",
+                marginLeft: 40,
+                paddingTop: 10,
+                paddingBottom: 10,
+              }}
+            >
+              <Text style={{ fontWeight: "bold" }}>Email</Text>
+              <Text style={{ marginLeft: 87 }}>server@gmail.com</Text>
+            </View>
           </View>
+        </View>
+        <View className="px-8">
+          <TouchableOpacity
+            className="py-4 rounded-3xl"
+            onPress={() => navigation.navigate("Login")}
+            style={{ backgroundColor: themeColors.logoutbtn }}
+          >
+            <Text
+              className="font-bold text-center text-white"
+              style={{ fontSize: 20 }}
+            >
+              Log Out
+            </Text>
+          </TouchableOpacity>
         </View>
       </View>
     </SafeAreaView>
