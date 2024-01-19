@@ -10,7 +10,7 @@ import {
 const BottomTab = ({ onPress, onPress2 }) => {
 
   return (
-    <View className="bg-white flex-row h-[10vh] rounded-t-[25px] items-center justify-around ml-4">
+    <View className="bg-white flex-row h-[10vh] rounded-t-[25px] items-center justify-around " style={{marginVertical: 'auto', height: 85}}>
       <TouchableOpacity className="flex items-center" onPress={onPress}>
           <AntDesign
               name="home"
@@ -24,7 +24,7 @@ const BottomTab = ({ onPress, onPress2 }) => {
           <FontAwesome
               style={{
                   color: "white",
-                  fontSize: 24,
+                  fontSize: 40,
               }}
               name="qrcode"
           />

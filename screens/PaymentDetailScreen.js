@@ -13,7 +13,7 @@ import NewsCard from "../components/newsCard";
 import { FlatList } from "react-native";
 import BottomTab from "../components/bottomTab";
 
-export default function StatusDetailScreen() {
+export default function SummaryScreen() {
   const navigation = useNavigation();
 
   return (
@@ -53,7 +53,7 @@ export default function StatusDetailScreen() {
                 alignContent: "center",
               }}
             >
-              Status Detail
+              Summary
             </Text>
           </TouchableOpacity>
 
@@ -91,7 +91,7 @@ export default function StatusDetailScreen() {
             marginRight: 25,
             borderRadius: 20,
             overflow: "hidden",
-            height: 230,
+            height: 260,
             width: "auto",
           }}
         >
@@ -100,28 +100,15 @@ export default function StatusDetailScreen() {
               flexDirection: "row",
               marginLeft: 25,
               marginTop: 5,
+              marginBottom: 6,
             }}
           >
-            {/* ชื่อสถานที่ */}
-            <Text
-              style={{
-                alignSelf: "start",
-                color: themeColors.text,
-                fontSize: 16,
-                marginTop: 15,
-                fontWeight: "bold",
-              }}
-            >
-              FUTURE PARK RANGSIT
-            </Text>
-
             {/* เรทราคาต่อชั่วโมง */}
             <View
               style={{
                 backgroundColor: themeColors.bgbtn,
-                marginLeft: 10,
                 marginTop: 9,
-                marginRight: 25,
+                marginRight: 10,
                 borderRadius: 7,
                 overflow: "hidden",
                 height: 30,
@@ -140,6 +127,18 @@ export default function StatusDetailScreen() {
                 20BATHS/HOUR
               </Text>
             </View>
+            {/* ชื่อสถานที่ */}
+            <Text
+              style={{
+                alignSelf: "end",
+                color: "black",
+                fontSize: 16,
+                marginTop: 15,
+                fontWeight: "bold",
+              }}
+            >
+              FUTURE PARK RANGSIT
+            </Text>
           </View>
 
           {/* เส้นใต้ */}
@@ -152,51 +151,8 @@ export default function StatusDetailScreen() {
               marginTop: 5,
             }}
           />
-          {/* ราคาที่ต้องจ่าย */}
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "center",
-              marginLeft: 25,
-              marginTop: 10,
-            }}
-          >
-            <Text
-              style={{
-                color: "black",
-                fontSize: 50,
-                marginTop: 10,
-                fontWeight: "bold",
-                color: themeColors.text,
-              }}
-            >
-              40
-            </Text>
-            <Text
-              style={{
-                color: "black",
-                fontSize: 16,
-                marginTop: 40,
-                marginLeft: 5,
-                fontWeight: "bold",
-                color: themeColors.text,
-              }}
-            >
-              BATHS
-            </Text>
-          </View>
 
-          <Text
-            style={{
-              alignSelf: "center",
-              color: "black",
-              fontSize: 16,
-              marginTop: 10,
-              fontWeight: "bold",
-            }}
-          >
-            LICENSE PLATE : 1กข1111
-          </Text>
+          {/* ราคาที่ต้องจ่าย */}
 
           <View
             style={{ justifyContent: "space-between", flexDirection: "row" }}
@@ -206,22 +162,48 @@ export default function StatusDetailScreen() {
                 marginLeft: 25,
                 marginTop: 10,
                 color: "gray",
+                fontWeight: "bold",
               }}
             >
-              Check-In Time
+              DATE
             </Text>
 
             <Text
               style={{
                 marginTop: 10,
                 marginRight: 25,
-                color: "black",
+                color: "gray",
+              }}
+            >
+              21/10/2023
+            </Text>
+          </View>
+
+          <View
+            style={{ justifyContent: "space-between", flexDirection: "row" }}
+          >
+            <Text
+              style={{
+                marginLeft: 25,
+                marginTop: 10,
+                color: "gray",
                 fontWeight: "bold",
+              }}
+            >
+              CHECK-IN TIME
+            </Text>
+
+            <Text
+              style={{
+                marginTop: 10,
+                marginRight: 25,
+                color: "grey",
               }}
             >
               11:30:00 a.m.
             </Text>
           </View>
+
           <View
             style={{ justifyContent: "space-between", flexDirection: "row" }}
           >
@@ -230,40 +212,128 @@ export default function StatusDetailScreen() {
                 marginLeft: 25,
                 marginTop: 10,
                 color: "gray",
+                fontWeight: "bold",
               }}
             >
-              Current Parking for
+              CHECK-OUT TIME
             </Text>
 
             <Text
               style={{
                 marginTop: 10,
                 marginRight: 25,
-                color: "black",
+                color: "grey",
+              }}
+            >
+              02:30:00 p.m.
+            </Text>
+          </View>
+
+          <View
+            style={{ justifyContent: "space-between", flexDirection: "row" }}
+          >
+            <Text
+              style={{
+                marginLeft: 25,
+                marginTop: 10,
+                color: "gray",
                 fontWeight: "bold",
+              }}
+            >
+              LICENSE PLATE
+            </Text>
+
+            <Text
+              style={{
+                marginTop: 10,
+                marginRight: 25,
+                color: "grey",
+              }}
+            >
+              1กก1111
+            </Text>
+          </View>
+          <View
+            style={{ justifyContent: "space-between", flexDirection: "row" }}
+          >
+            <Text
+              style={{
+                marginLeft: 25,
+                marginTop: 10,
+                color: "gray",
+                fontWeight: "bold",
+              }}
+            >
+              TOTAL TIME
+            </Text>
+
+            <Text
+              style={{
+                marginTop: 10,
+                marginRight: 25,
+                color: "grey",
               }}
             >
               2 hrs 00 mins
             </Text>
           </View>
+          {/* เส้นใต้ */}
+          <View
+            style={{
+              borderBottomWidth: 2,
+              borderBottomColor: themeColors.text,
+              width: "87%",
+              alignSelf: "center",
+              marginTop: 15,
+            }}
+          />
+
+          <View
+            style={{ justifyContent: "space-between", flexDirection: "row" }}
+          >
+            <Text
+              style={{
+                marginLeft: 25,
+                marginTop: 10,
+                color: themeColors.text,
+                fontWeight: "bold",
+                fontSize: 20,
+              }}
+            >
+              TOTAL
+            </Text>
+
+            <Text
+              style={{
+                marginTop: 10,
+                marginRight: 25,
+                color: themeColors.text,
+                fontWeight: "bold",
+                fontSize: 20,
+              }}
+            >
+              60 BATHS
+            </Text>
+          </View>
         </TouchableOpacity>
 
+        {/* ปุ่มกด */}
         <TouchableOpacity
           className="py-4 rounded-3xl"
-          onPress={() => navigation.navigate("Summary")}
+          onPress={() => navigation.navigate("Home")}
           style={{
             backgroundColor: themeColors.bgbtn,
             marginLeft: 25,
             marginRight: 25,
             marginTop: 10,
-            marginBottom: 335
+            marginBottom: 300,
           }}
         >
           <Text
             className="font-bold text-center text-white"
             style={{ fontSize: 20 }}
           >
-            SUMMARY
+            COMPLETE PAYMENT
           </Text>
         </TouchableOpacity>
 

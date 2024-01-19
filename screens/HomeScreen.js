@@ -155,11 +155,12 @@ export default function HomeScreen() {
         >
           Parking Status
         </Text>
+
         <TouchableOpacity
           onPress={() => navigation.navigate("StatusDetail")}
           style={{
             backgroundColor: "white",
-            marginBottom: 20,
+            marginBottom: 95,
             marginLeft: 25,
             marginRight: 25,
             borderRadius: 20,
@@ -281,9 +282,10 @@ export default function HomeScreen() {
         </TouchableOpacity>
 
         {/* menu bar  */}
-        <BottomTab 
-          onPress={()=> navigation.navigate("Home")}
-          onPress2={()=> navigation.navigate("History")} 
+        <BottomTab
+          style={{ marginTop: 100 }}
+          onPress={() => navigation.navigate("Home")}
+          onPress2={() => navigation.navigate("History")}
         />
       </View>
     </SafeAreaView>
