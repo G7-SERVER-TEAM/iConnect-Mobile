@@ -10,6 +10,7 @@ import CreateAccountScreen from '../screens/CreateAccountScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import StatusDetailScreen from '../screens/StatusDetailScreen';
 import HistoryScreen from '../screens/HistoryScreen';
+import NotificationScreen from '../screens/NotificationScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -26,6 +27,7 @@ export default function AppNavigation() {
         <Stack.Screen name="Profile" options={{headerShown: false}} component={ProfileScreen} />
         <Stack.Screen name="StatusDetail" options={{headerShown: false}} component={StatusDetailScreen} />
         <Stack.Screen name="History" options={{headerShown: false}} component={HistoryScreen} />
+        <Stack.Screen name="Notification" options={{headerShown: false}} component={NotificationScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   )
