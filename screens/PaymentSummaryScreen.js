@@ -1,5 +1,5 @@
 import { View, Text, Image, TouchableOpacity } from "react-native";
-import React, { useState , useEffect } from "react";
+import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { themeColors } from "../theme";
 import { useNavigation } from "@react-navigation/native";
@@ -9,15 +9,11 @@ import {
   Ionicons,
   MaterialCommunityIcons,
 } from "@expo/vector-icons";
-import NewsCard from "../components/newsCard";
-import { FlatList } from "react-native";
 import BottomTab from "../components/bottomTab";
 
-export default function PaymentDetailScreen() {
+export default function PaymentSuccessScreen() {
   const navigation = useNavigation();
-  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(null);
-  useEffect(() => { setSelectedPaymentMethod("cash");
-  }, []); 
+
   return (
     <SafeAreaView
       className="flex-1"
@@ -55,7 +51,7 @@ export default function PaymentDetailScreen() {
                 alignContent: "center",
               }}
             >
-              Payment
+              Payment Summary
             </Text>
           </TouchableOpacity>
 
@@ -83,113 +79,85 @@ export default function PaymentDetailScreen() {
         </View>
       </View>
 
-      <View
-        style={{
-          margin: 20,
-          padding: 20,
-        }}
-      >
-        <Text
+      <View>
+        {/* Checkmark Icon */}
+        <View
           style={{
-            fontSize: 18,
-            fontWeight: "bold",
-            color: themeColors.text,
-            marginBottom: 15,
-          }}
-        >
-          Select Payment Method
-        </Text>
-
-        {/* Cash Payment */}
-        <TouchableOpacity
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "flex-start", // Align items to the left
-            marginBottom: 15,
+            width: 80,
+            height: 80,
+            borderRadius: 40,
             backgroundColor: "white",
-            borderRadius: 15,
-            padding: 20,
+            alignItems: "center",
+            justifyContent: "center",
+            marginLeft: "auto",
+            marginRight: "auto",
+            marginTop: 40,
+            zIndex: 1, 
           }}
-          onPress={() => setSelectedPaymentMethod("cash")}
         >
-          {selectedPaymentMethod === "cash" && (
-            <MaterialCommunityIcons
-              name="radiobox-marked"
-              style={{
-                color: themeColors.bgbtn,
-                fontSize: 30,
-              }}
-            />
-          )}
+          <MaterialCommunityIcons
+            name="checkbox-marked-circle"
+            style={{
+              color: themeColors.text,
+              fontSize: 80,
+            }}
+          />
+        </View>
+
+        <View
+          style={{
+            backgroundColor: "white",
+            borderRadius: 20,
+            padding: 10,
+            marginLeft: 30,
+            marginRight: 30,
+            marginTop: -25,
+          }}
+        >
+          <Text
+            style={{
+              fontSize: 24,
+              fontWeight: "bold",
+              color: themeColors.text,
+              marginTop: 20,
+              textAlign: "center",
+            }}
+          >
+            Thank You!
+          </Text>
+
           <Text
             style={{
               fontSize: 18,
-              color: themeColors.text,
-              marginLeft: 10,
-              fontWeight: "bold",
+              color: "grey",
+              textAlign: "center",
+              marginTop: 10,
+              marginBottom: 20,
             }}
           >
-            CASH
+            Your payment is successful
           </Text>
-          <MaterialCommunityIcons
-            name="cash"
+          {/* เส้นใต้ */}
+          <View
             style={{
-              color: themeColors.text,
-              fontSize: 35,
-              marginLeft: "auto",
+              borderBottomWidth: 1.5,
+              borderBottomColor: "grey",
+              width: "87%",
+              alignSelf: "center",
+              marginBottom: 15,
             }}
           />
-        </TouchableOpacity>
+        </View>
 
-        {/* Card Payment */}
-        <TouchableOpacity
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "flex-start", // Align items to the left
-            marginBottom: 15,
-            backgroundColor: "white",
-            borderRadius: 15,
-            padding: 20,
-          }}
-          onPress={() => setSelectedPaymentMethod("card")}
-        >
-          {selectedPaymentMethod === "card" && (
-            <MaterialCommunityIcons
-              name="radiobox-marked"
-              style={{
-                color: themeColors.bgbtn,
-                fontSize: 30,
-              }}
-            />
-          )}
-          <Text style={{
-              fontSize: 18,
-              color: themeColors.text,
-              marginLeft: 10,
-              fontWeight: "bold",
-            }}>QR PAYMENT</Text>
-          <MaterialCommunityIcons
-            name="credit-card"
-            style={{
-              color: themeColors.text,
-              fontSize: 35,
-              marginLeft: "auto",
-            }}
-          />
-        </TouchableOpacity>
-      </View>
-
-      <View>
         {/* ปุ่มกด */}
         <TouchableOpacity
           className="py-4 rounded-3xl"
-          onPress={() => navigation.navigate("PaymentSummary")}
+          onPress={() => navigation.navigate("Home")}
           style={{
             backgroundColor: themeColors.bgbtn,
-            marginLeft: 35,
-            marginRight: 35,
+            marginLeft: 30,
+            marginRight: 30,
+            marginTop: 10,
             marginBottom: 300,
           }}
         >
@@ -197,17 +165,16 @@ export default function PaymentDetailScreen() {
             className="font-bold text-center text-white"
             style={{ fontSize: 20 }}
           >
-            CONTINUE
+            Go Back to HOME
           </Text>
         </TouchableOpacity>
-        <View>
-          {/* menu bar  */}
-          <BottomTab
-            style={{ marginTop: 100 }}
-            onPress={() => navigation.navigate("Home")}
-            onPress2={() => navigation.navigate("History")}
-          />
-        </View>
+
+        {/* menu bar */}
+        <BottomTab
+          style={{ marginTop: 100 }}
+          onPress={() => navigation.navigate("Home")}
+          onPress2={() => navigation.navigate("History")}
+        />
       </View>
     </SafeAreaView>
   );

@@ -320,7 +320,7 @@ export default function SummaryScreen() {
         {/* ปุ่มกด */}
         <TouchableOpacity
           className="py-4 rounded-3xl"
-          onPress={() => navigation.navigate("Home")}
+          onPress={() => navigation.navigate("PaymentDetail")}
           style={{
             backgroundColor: themeColors.bgbtn,
             marginLeft: 25,
