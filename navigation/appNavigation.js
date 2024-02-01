@@ -11,9 +11,9 @@ import ProfileScreen from '../screens/ProfileScreen';
 import StatusDetailScreen from '../screens/StatusDetailScreen';
 import HistoryScreen from '../screens/HistoryScreen';
 import SummaryScreen from '../screens/SummaryScreen';
-
 import PaymentSummaryScreen from '../screens/PaymentSummaryScreen';
 import PaymentDetailScreen from '../screens/PaymentDetailScreen';
+import NotificationScreen from '../screens/NotificationScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -33,6 +33,7 @@ export default function AppNavigation() {
         <Stack.Screen name="Summary" options={{headerShown: false}} component={SummaryScreen} />
         <Stack.Screen name="PaymentDetail" options={{headerShown: false}} component={PaymentDetailScreen} />
         <Stack.Screen name="PaymentSummary" options={{headerShown: false}} component={PaymentSummaryScreen} />
+        <Stack.Screen name="Notification" options={{headerShown: false}} component={NotificationScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   )

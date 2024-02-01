@@ -62,8 +62,9 @@ const HistoryScreen = () => {
                         onPress={() => navigation.navigate("Profile")}
                     >
                         <MaterialCommunityIcons
-                        name="bell"
-                        style={{ color: themeColors.text, fontSize: 25 }}
+                            name="bell"
+                            style={{ color: themeColors.text, fontSize: 25 }}
+                            onPress={() => navigation.navigate("Notification")}
                         />
                     </TouchableOpacity>
                     <TouchableOpacity

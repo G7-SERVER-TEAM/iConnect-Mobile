@@ -80,6 +80,7 @@ export default function HomeScreen() {
             <MaterialCommunityIcons
               name="bell"
               style={{ color: themeColors.text, fontSize: 25 }}
+              onPress={() => navigation.navigate("Notification")}
             />
           </TouchableOpacity>
 
