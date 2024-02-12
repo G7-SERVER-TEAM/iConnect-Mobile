@@ -1,5 +1,5 @@
 import { View, Text, Image, TouchableOpacity } from "react-native";
-import React, { useState , useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { themeColors } from "../theme";
 import { useNavigation } from "@react-navigation/native";
@@ -16,8 +16,9 @@ import BottomTab from "../components/bottomTab";
 export default function PaymentDetailScreen() {
   const navigation = useNavigation();
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(null);
-  useEffect(() => { setSelectedPaymentMethod("cash");
-  }, []); 
+  useEffect(() => {
+    setSelectedPaymentMethod("cash");
+  }, []);
   return (
     <SafeAreaView
       className="flex-1"
@@ -164,12 +165,16 @@ export default function PaymentDetailScreen() {
               }}
             />
           )}
-          <Text style={{
+          <Text
+            style={{
               fontSize: 18,
               color: themeColors.text,
               marginLeft: 10,
               fontWeight: "bold",
-            }}>QR PAYMENT</Text>
+            }}
+          >
+            QR PAYMENT
+          </Text>
           <MaterialCommunityIcons
             name="credit-card"
             style={{
@@ -190,7 +195,7 @@ export default function PaymentDetailScreen() {
             backgroundColor: themeColors.bgbtn,
             marginLeft: 35,
             marginRight: 35,
-            marginBottom: 300,
+            
           }}
         >
           <Text
@@ -200,14 +205,13 @@ export default function PaymentDetailScreen() {
             CONTINUE
           </Text>
         </TouchableOpacity>
-        <View>
-          {/* menu bar  */}
-          <BottomTab
-            style={{ marginTop: 100 }}
-            onPress={() => navigation.navigate("Home")}
-            onPress2={() => navigation.navigate("History")}
-          />
-        </View>
+      </View>
+      {/* menu bar  */}
+      <View style={{ marginTop: "auto" }}>
+        <BottomTab
+          onPress={() => navigation.navigate("Home")}
+          onPress2={() => navigation.navigate("History")}
+        />
       </View>
     </SafeAreaView>
   );
