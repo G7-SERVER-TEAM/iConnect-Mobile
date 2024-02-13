@@ -1,98 +1,106 @@
-import React, {useState} from 'react';
-import { View, Text, TouchableOpacity, Image, FlatList } from 'react-native'
+import React, { useState } from "react";
+import { View, Text, TouchableOpacity, Image, FlatList } from "react-native";
 import { themeColors } from "../theme";
 import { useNavigation } from "@react-navigation/native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { SafeAreaView } from 'react-native-safe-area-context';
-import BottomTab from '../components/bottomTab';
-import HistoriesCard from '../components/historiesCard';
+import { SafeAreaView } from "react-native-safe-area-context";
+import BottomTab from "../components/bottomTab";
+import HistoriesCard from "../components/historiesCard";
 
 const HistoryScreen = () => {
-    const navigation = useNavigation();
-    const historiesData = [
-        {
-            id: "1",
-            name:"Future Park Rangsit",
-            date:"21/10/2023",
-            timestamp: {
-                start:"09:30:10 p.m.",
-                end:"12:30:00 p.m.",
-            },
-            license_plate:"1กก1111",
-            price: "60",
-            duration: "3",
-        },
-        {
-            id: "2",
-            name:"Central World",
-            date:"20/10/2023",
-            timestamp: {
-                start:"16:00:30 p.m.",
-                end:"18:00:10 p.m.",
-            },
-            license_plate:"1กข1234",
-            price: "70",
-            duration: "3",
-        }
-    ];
+  const navigation = useNavigation();
+  const historiesData = [
+    {
+      id: "1",
+      name: "Future Park Rangsit",
+      date: "21/10/2023",
+      timestamp: {
+        start: "09:30:10 p.m.",
+        end: "12:30:00 p.m.",
+      },
+      license_plate: "1กก1111",
+      price: "60",
+      duration: "3",
+    },
+    {
+      id: "2",
+      name: "Central World",
+      date: "20/10/2023",
+      timestamp: {
+        start: "16:00:30 p.m.",
+        end: "18:00:10 p.m.",
+      },
+      license_plate: "1กข1234",
+      price: "70",
+      duration: "3",
+    },
+  ];
 
-    return (
-        <SafeAreaView className="flex-1 gap-3" style={{backgroundColor: themeColors.bg}}>
-            <View 
-                className=
-                "bg-white flex-row border rounded-b-[25px] justify-between items-center h-[90px] px-[22px]"
-            >
-                <View className="items-center">
-                    <TouchableOpacity onPress={() => navigation.navigate("Home")}>
-                        <Image
-                        source={require("../assets/images/WelcomePicture.png")}
-                        style={{ width: 50, height: 50, marginLeft: 10 }}
-                        />
-                    </TouchableOpacity>
-                </View>
+  return (
+    <SafeAreaView
+      className="flex-1 gap-3"
+      style={{ backgroundColor: themeColors.bg }}
+    >
+      <View className="bg-white flex-row border rounded-b-[25px] justify-between items-center h-[90px] px-[22px]">
+        <View className="items-center">
+          <TouchableOpacity onPress={() => navigation.navigate("Home")}>
+            <Image
+              source={require("../assets/images/WelcomePicture.png")}
+              style={{ width: 50, height: 50, marginLeft: 10 }}
+            />
+          </TouchableOpacity>
+        </View>
 
-                <View className="flex">
-                    <Text className="font-bold text-[20px]" style={{color: themeColors.text}}>History Parking</Text>
-                </View>
+        <View className="flex">
+          <Text
+            className="font-bold text-[20px]"
+            style={{ color: themeColors.text }}
+          >
+            History Parking
+          </Text>
+        </View>
 
-                <View className="flex-row">
-                    <TouchableOpacity
-                        className="justify-center"
-                        style={{ marginLeft: "auto" }}
-                        onPress={() => navigation.navigate("Profile")}
-                    >
-                        <MaterialCommunityIcons
-                            name="bell"
-                            style={{ color: themeColors.text, fontSize: 25 }}
-                            onPress={() => navigation.navigate("Notification")}
-                        />
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        className="justify-center"
-                        style={{ textAlign: "center", marginLeft: 10 }}
-                        onPress={() => navigation.navigate("Profile")}
-                    >
-                        <MaterialCommunityIcons
-                        name="account"
-                        style={{ color: themeColors.text, fontSize: 29, marginRight: 10 }}
-                        />
-                    </TouchableOpacity>
-                </View>
-            </View>
-            <View>
-                <Text className="text-[24px] font-bold ml-5" style={{color: themeColors.text}}>My History</Text>
-            </View>
-            <View className="flex-1 items-center">
-                <FlatList
-                    data= {historiesData}
-                    keyExtractor={(item) => item.id}
-                    renderItem={({ item }) => (
-                        <HistoriesCard data={item} />
-                    )} 
-                />
-            </View>
-            {/* <View className="flex-1 items-center"> */}
-                {/* <View 
+        <View className="flex-row">
+          <TouchableOpacity
+            className="justify-center"
+            style={{ marginLeft: "auto" }}
+            onPress={() => navigation.navigate("Profile")}
+          >
+            <MaterialCommunityIcons
+              name="bell"
+              style={{ color: themeColors.text, fontSize: 25 }}
+              onPress={() => navigation.navigate("Notification")}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity
+            className="justify-center"
+            style={{ textAlign: "center", marginLeft: 10 }}
+            onPress={() => navigation.navigate("Profile")}
+          >
+            <MaterialCommunityIcons
+              name="account"
+              style={{ color: themeColors.text, fontSize: 29, marginRight: 10 }}
+            />
+          </TouchableOpacity>
+        </View>
+      </View>
+      <View>
+        <Text
+          className="text-[24px] font-bold ml-5"
+          style={{ color: themeColors.text }}
+        >
+          My History
+        </Text>
+      </View>
+      <View className="flex-1 items-center">
+        <FlatList
+          data={historiesData}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => <HistoriesCard data={item} />}
+        />
+      </View>
+      {/* <View className="flex-1 items-center"> */}
+      {/* <View 
                 className=
                     "bg-white flex rounded-[25px] h-[15vh] w-[93vw] px-[22px] pt-[16px] mb-5"
                     >
@@ -160,14 +168,16 @@ const HistoryScreen = () => {
                             </View>
                         </View>
                 </View> */}
-            {/* </View> */}
-            <BottomTab 
-                onPress={()=> navigation.navigate("Home")}
-                onPress2={()=> navigation.navigate("History")} 
-            />
-        </SafeAreaView>
-    )
-}
+      {/* </View> */}
+      {/* menu bar  */}
+      <View style={{ marginTop: "auto" }}>
+        <BottomTab
+          onPress={() => navigation.navigate("Home")}
+          onPress2={() => navigation.navigate("History")}
+        />
+      </View>
+    </SafeAreaView>
+  );
+};
 
-
-export default HistoryScreen
+export default HistoryScreen;
