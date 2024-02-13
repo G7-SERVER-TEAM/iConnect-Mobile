@@ -1,8 +1,16 @@
-import { View, Text, Image, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  Dimensions,
+  ScrollView,
+} from "react-native";
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { themeColors } from "../theme";
 import { useNavigation } from "@react-navigation/native";
+const { width, height } = Dimensions.get("window");
 import {
   AntDesign,
   FontAwesome,
@@ -12,10 +20,12 @@ import {
 import NewsCard from "../components/newsCard";
 import { FlatList } from "react-native";
 import BottomTab from "../components/bottomTab";
+import { RNCamera } from 'react-native-camera';
 
 export default function HomeScreen() {
   const navigation = useNavigation();
-
+  
+  
   const newsData = [
     {
       id: "1",
@@ -80,6 +90,7 @@ export default function HomeScreen() {
             <MaterialCommunityIcons
               name="bell"
               style={{ color: themeColors.text, fontSize: 25 }}
+              onPress={() => navigation.navigate("Notification")}
             />
           </TouchableOpacity>
 
@@ -111,178 +122,185 @@ export default function HomeScreen() {
           </Text>
         </View>
       </View>
-
-      <View style={{ marginBottom: 5 }}>
-        <Text
-          style={{
-            fontWeight: "bold",
-            color: themeColors.text,
-            fontSize: 20,
-            alignSelf: "flex-start",
-            marginTop: 20,
-            marginBottom: 10,
-            marginLeft: 25,
-          }}
-        >
-          News
-        </Text>
-        <FlatList
-          style={{ marginLeft: 25 }}
-          data={newsData}
-          keyExtractor={(item) => item.id}
-          horizontal
-          showsHorizontalScrollIndicator={false} // Optional: hide horizontal scroll indicator
-          renderItem={({ item }) => (
-            <NewsCard
-              news={item}
-              onPress={() => navigation.navigate("NewsDetail", { news: item })}
-            />
-          )}
-        />
-      </View>
-
-      <View>
-        <Text
-          style={{
-            fontWeight: "bold",
-            color: themeColors.text,
-            fontSize: 20,
-            alignSelf: "flex-start",
-            marginTop: 0,
-            marginBottom: 10,
-            marginLeft: 25,
-          }}
-        >
-          Parking Status
-        </Text>
-        <TouchableOpacity
-          style={{
-            backgroundColor: "white",
-            marginBottom: 20,
-            marginLeft: 25,
-            marginRight: 25,
-            borderRadius: 20,
-            overflow: "hidden",
-            height: 180,
-            width: "auto",
-          }}
-        >
+      <ScrollView>
+        {/* <View style={{ marginBottom: 5 }}>
           <Text
             style={{
-              alignSelf: "center",
+              fontWeight: "bold",
               color: themeColors.text,
               fontSize: 20,
-              marginTop: 15,
-              fontWeight: "bold",
+              alignSelf: "flex-start",
+              marginTop: 20,
+              marginBottom: 10,
+              marginLeft: 25,
             }}
           >
-            FUTURE PARK RANGSIT
+            News
           </Text>
-          <View
-            style={{
-              borderBottomWidth: 2,
-              borderBottomColor: themeColors.text,
-              width: "85%",
-              alignSelf: "center",
-              marginTop: 5,
-            }}
+          <FlatList
+            style={{ marginLeft: 25 }}
+            data={newsData}
+            keyExtractor={(item) => item.id}
+            horizontal
+            showsHorizontalScrollIndicator={false} // Optional: hide horizontal scroll indicator
+            renderItem={({ item }) => (
+              <NewsCard
+                news={item}
+                onPress={() =>
+                  navigation.navigate("NewsDetail", { news: item })
+                }
+              />
+            )}
           />
+        </View> */}
 
+        <View>
           <Text
             style={{
-              alignSelf: "center",
-              color: "black",
-              fontSize: 16,
-              marginTop: 10,
               fontWeight: "bold",
+              color: themeColors.text,
+              fontSize: 20,
+              alignSelf: "flex-start",
+              marginTop: 20,
+              marginBottom: 10,
+              marginLeft: 25,
             }}
           >
-            LICENSE PLATE : 1กข1111
+            Parking Status
           </Text>
 
-          <View
-            style={{ justifyContent: "space-between", flexDirection: "row" }}
+          <TouchableOpacity
+            onPress={() => navigation.navigate("StatusDetail")}
+            style={{
+              backgroundColor: "white",
+              marginLeft: 25,
+              marginRight: 25,
+              borderRadius: 20,
+              overflow: "hidden",
+              height: 180,
+              width: "auto",
+            }}
           >
             <Text
               style={{
-                marginLeft: 25,
-                marginTop: 10,
-                color: "gray",
-              }}
-            >
-              Check-In Time
-            </Text>
-
-            <Text
-              style={{
-                marginTop: 10,
-                marginRight: 25,
-                color: "black",
-                fontWeight: "bold",
-              }}
-            >
-              11:30:00 a.m.
-            </Text>
-          </View>
-
-          <View
-            style={{ justifyContent: "space-between", flexDirection: "row" }}
-          >
-            <Text
-              style={{
-                marginLeft: 25,
-                marginTop: 10,
-                color: "gray",
-              }}
-            >
-              Current Parking for
-            </Text>
-
-            <Text
-              style={{
-                marginTop: 10,
-                marginRight: 25,
-                color: "black",
-                fontWeight: "bold",
-              }}
-            >
-              2 hrs 00 mins
-            </Text>
-          </View>
-
-          <View
-            style={{ justifyContent: "space-between", flexDirection: "row" }}
-          >
-            <Text
-              style={{
-                marginLeft: 25,
-                marginTop: 10,
+                alignSelf: "center",
                 color: themeColors.text,
-                fontSize: 18,
+                fontSize: 20,
+                marginTop: 15,
                 fontWeight: "bold",
               }}
             >
-              Total
+              FUTURE PARK RANGSIT
             </Text>
+            <View
+              style={{
+                borderBottomWidth: 2,
+                borderBottomColor: themeColors.text,
+                width: "85%",
+                alignSelf: "center",
+                marginTop: 5,
+              }}
+            />
 
             <Text
               style={{
-                marginRight: 25,
+                alignSelf: "center",
+                color: "black",
+                fontSize: 16,
                 marginTop: 10,
-                color: themeColors.text,
-                fontSize: 18,
                 fontWeight: "bold",
               }}
             >
-              40 BATHS
+              LICENSE PLATE : 1กข1111
             </Text>
-          </View>
-        </TouchableOpacity>
 
-        {/* menu bar  */}
-        <BottomTab 
-          onPress={()=> navigation.navigate("Home")}
-          onPress2={()=> navigation.navigate("History")} 
+            <View
+              style={{ justifyContent: "space-between", flexDirection: "row" }}
+            >
+              <Text
+                style={{
+                  marginLeft: 25,
+                  marginTop: 10,
+                  color: "gray",
+                }}
+              >
+                Check-In Time
+              </Text>
+
+              <Text
+                style={{
+                  marginTop: 10,
+                  marginRight: 25,
+                  color: "black",
+                  fontWeight: "bold",
+                }}
+              >
+                11:30:00 a.m.
+              </Text>
+            </View>
+
+            <View
+              style={{ justifyContent: "space-between", flexDirection: "row" }}
+            >
+              <Text
+                style={{
+                  marginLeft: 25,
+                  marginTop: 10,
+                  color: "gray",
+                }}
+              >
+                Current Parking for
+              </Text>
+
+              <Text
+                style={{
+                  marginTop: 10,
+                  marginRight: 25,
+                  color: "black",
+                  fontWeight: "bold",
+                }}
+              >
+                2 hrs 00 mins
+              </Text>
+            </View>
+
+            <View
+              style={{ justifyContent: "space-between", flexDirection: "row" }}
+            >
+              <Text
+                style={{
+                  marginLeft: 25,
+                  marginTop: 10,
+                  color: themeColors.text,
+                  fontSize: 18,
+                  fontWeight: "bold",
+                }}
+              >
+                Total
+              </Text>
+
+              <Text
+                style={{
+                  marginRight: 25,
+                  marginTop: 10,
+                  color: themeColors.text,
+                  fontSize: 18,
+                  fontWeight: "bold",
+                }}
+              >
+                40 BATHS
+              </Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
+
+      {/* menu bar  */}
+      <View style={{ marginTop: "auto" }}>
+        <BottomTab
+          onPress={() => navigation.navigate("Home")}
+          
+          onPress2={() => navigation.navigate("History")}
         />
       </View>
     </SafeAreaView>

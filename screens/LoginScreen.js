@@ -24,19 +24,9 @@ export default function LoginScreen() {
   return (
     <View className="flex-1" style={{ backgroundColor: themeColors.bg }}>
       <SafeAreaView className="flex">
-        <View className="flex-row" style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-          <TouchableOpacity
-            style={{ marginLeft: 30 }}
-            onPress={() => navigation.goBack()}
-          >
-            <ArrowLeftIcon size="20" color="white" />
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={{ marginRight: 30 }}
-            onPress={() => navigation.navigate("SignUp")}
-          >
-            <Text style={{ color: "white"}}>CREATE ACCOUNT</Text>
+        <View style={{ flexDirection: "row", justifyContent: "flex-end", marginRight: 30 }}>
+          <TouchableOpacity onPress={() => navigation.navigate("SignUp")}>
+            <Text style={{ color: "white" }}>CREATE ACCOUNT</Text>
           </TouchableOpacity>
         </View>
 
