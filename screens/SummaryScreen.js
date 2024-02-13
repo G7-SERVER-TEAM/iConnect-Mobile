@@ -326,7 +326,7 @@ export default function SummaryScreen() {
             marginLeft: 25,
             marginRight: 25,
             marginTop: 10,
-            marginBottom: 300,
+            
           }}
         >
           <Text
@@ -336,10 +336,10 @@ export default function SummaryScreen() {
             COMPLETE PAYMENT
           </Text>
         </TouchableOpacity>
-
-        {/* menu bar  */}
+      </View>
+      {/* menu bar  */}
+      <View style={{ marginTop: "auto" }}>
         <BottomTab
-          style={{ marginTop: 100 }}
           onPress={() => navigation.navigate("Home")}
           onPress2={() => navigation.navigate("History")}
         />

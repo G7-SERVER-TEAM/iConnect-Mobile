@@ -92,7 +92,7 @@ export default function PaymentSuccessScreen() {
             marginLeft: "auto",
             marginRight: "auto",
             marginTop: 40,
-            zIndex: 1, 
+            zIndex: 1,
           }}
         >
           <MaterialCommunityIcons
@@ -158,7 +158,6 @@ export default function PaymentSuccessScreen() {
             marginLeft: 30,
             marginRight: 30,
             marginTop: 10,
-            marginBottom: 300,
           }}
         >
           <Text
@@ -168,10 +167,10 @@ export default function PaymentSuccessScreen() {
             Go Back to HOME
           </Text>
         </TouchableOpacity>
-
-        {/* menu bar */}
+      </View>
+      {/* menu bar  */}
+      <View style={{ marginTop: "auto" }}>
         <BottomTab
-          style={{ marginTop: 100 }}
           onPress={() => navigation.navigate("Home")}
           onPress2={() => navigation.navigate("History")}
         />

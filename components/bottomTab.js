@@ -1,45 +1,72 @@
-import React from 'react'
-import { View, Text, TouchableOpacity } from 'react-native'
+import React from "react";
+import { View, Text, TouchableOpacity } from "react-native";
 import { themeColors } from "../theme";
-import {
-  AntDesign,
-  FontAwesome,
-  Ionicons,
-} from "@expo/vector-icons";
+import { AntDesign, FontAwesome, Ionicons } from "@expo/vector-icons";
 
-const BottomTab = ({ onPress, onPress2 }) => {
 
+
+const BottomTab = ({ onPress, onPress2, onPressQRCode }) => {
   return (
-    <View className="bg-white flex-row h-[10vh] rounded-t-[25px] items-center justify-around " style={{marginVertical: 'auto', height: 85}}>
-      <TouchableOpacity className="flex items-center" onPress={onPress}>
-          <AntDesign
-              name="home"
-              style={{ color: themeColors.text, fontSize: 25 }}
-          />
-          <Text className="text-[16px] font-bold" style={{color: themeColors.text}}>
-              Home
-          </Text>
+    <View
+      style={{
+        flexDirection: "row",
+        height: 85,
+        backgroundColor: "white",
+        borderTopLeftRadius: 25,
+        borderTopRightRadius: 25,
+        alignItems: "center",
+        justifyContent: "space-around",
+        marginBottom: 0,
+        
+        
+      }}
+    >
+      <TouchableOpacity style={{ alignItems: "center"}} onPress={onPress}>
+        <AntDesign
+          name="home"
+          style={{ color: themeColors.text, fontSize: 25 }}
+        />
+        <Text
+          style={{ color: themeColors.text, fontSize: 16, fontWeight: "bold" }}
+        >
+          Home
+        </Text>
       </TouchableOpacity>
-      <View className="absolute bottom-10 right-[42.5%] flex items-center justify-center rounded-full border-4 border-black h-[75px] w-[75px]" style={{backgroundColor: themeColors.text}}>
-          <FontAwesome
-              style={{
-                  color: "white",
-                  fontSize: 40,
-              }}
-              name="qrcode"
-          />
-      </View>
-      <TouchableOpacity className="flex items-center" onPress={onPress2}>
-          <Ionicons
-              name="document-text"
-              style={{ color: themeColors.text, fontSize: 25 }}
-          />
-          <Text className="text-[16px] font-bold" style={{color: themeColors.text}}>
-              History
-          </Text>
+      <TouchableOpacity
+        style={{
+            marginTop: -65,
+          width: 75,
+          height: 75, 
+          backgroundColor: themeColors.text,
+          borderRadius: 37.5, 
+          borderWidth: 4,
+          borderColor: "black",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+        onPress={onPressQRCode}
+      >
+        <FontAwesome
+          style={{
+            color: "white",
+            fontSize: 40,
+          }}
+          name="qrcode"
+        />
+      </TouchableOpacity>
+      <TouchableOpacity style={{ alignItems: "center",  }} onPress={onPress2}>
+        <Ionicons
+          name="document-text"
+          style={{ color: themeColors.text, fontSize: 30 }}
+        />
+        <Text
+          style={{ color: themeColors.text, fontSize: 14, fontWeight: "bold" }}
+        >
+          History
+        </Text>
       </TouchableOpacity>
     </View>
-  )
-}
+  );
+};
 
-export default BottomTab
+export default BottomTab; 

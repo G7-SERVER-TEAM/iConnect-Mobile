@@ -1,8 +1,9 @@
-import { View, Text, Image, TouchableOpacity } from "react-native";
+import { View, Text, Image, TouchableOpacity, Dimensions } from "react-native";
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { themeColors } from "../theme";
 import { useNavigation } from "@react-navigation/native";
+const { width, height } = Dimensions.get("window");
 import {
   AntDesign,
   FontAwesome,
@@ -108,8 +109,9 @@ export default function StatusDetailScreen() {
               style={{
                 alignSelf: "start",
                 color: themeColors.text,
-                fontSize: 16,
+                fontSize: 13,
                 marginTop: 15,
+                marginRight: 'auto',
                 fontWeight: "bold",
               }}
             >
@@ -120,13 +122,12 @@ export default function StatusDetailScreen() {
             <View
               style={{
                 backgroundColor: themeColors.bgbtn,
-                marginLeft: 10,
+                marginRight: 'auto',
                 marginTop: 9,
-                marginRight: 25,
                 borderRadius: 7,
                 overflow: "hidden",
                 height: 30,
-                width: 130,
+                width: 140,
               }}
             >
               <Text
@@ -257,7 +258,7 @@ export default function StatusDetailScreen() {
             marginLeft: 25,
             marginRight: 25,
             marginTop: 10,
-            marginBottom: 335
+            
           }}
         >
           <Text
@@ -268,9 +269,11 @@ export default function StatusDetailScreen() {
           </Text>
         </TouchableOpacity>
 
-        {/* menu bar  */}
+        
+      </View>
+      {/* menu bar  */}
+      <View style={{marginTop: 'auto'}}>
         <BottomTab
-          style={{ marginTop: 100 }}
           onPress={() => navigation.navigate("Home")}
           onPress2={() => navigation.navigate("History")}
         />
