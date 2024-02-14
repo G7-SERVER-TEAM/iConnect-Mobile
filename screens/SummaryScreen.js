@@ -130,9 +130,9 @@ export default function SummaryScreen() {
             {/* ชื่อสถานที่ */}
             <Text
               style={{
-                alignSelf: "end",
+                marginLeft: 10,
                 color: "black",
-                fontSize: 16,
+                fontSize: 14,
                 marginTop: 15,
                 fontWeight: "bold",
               }}
