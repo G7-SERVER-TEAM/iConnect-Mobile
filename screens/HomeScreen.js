@@ -299,7 +299,7 @@ export default function HomeScreen() {
       <View style={{ marginTop: "auto" }}>
         <BottomTab
           onPress={() => navigation.navigate("Home")}
-          
+          onPressQRCode={() => navigation.navigate("ScanQRCode")}
           onPress2={() => navigation.navigate("History")}
         />
       </View>
