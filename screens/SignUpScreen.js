@@ -93,11 +93,11 @@ export default function SignUpScreen() {
     
             <TouchableOpacity
                 className="py-4 rounded-3xl"
-                onPress={()=> navigation.navigate('CreateAccount')}
+                onPress={()=> navigation.navigate('Login')}
                 style={{backgroundColor: themeColors.bgbtn}}
             >
                 <Text className="font-bold text-center text-white" style={{fontSize: 20}}>
-                    CONTINUE
+                    CREATE ACCOUNT
                 </Text>
             </TouchableOpacity>
 
