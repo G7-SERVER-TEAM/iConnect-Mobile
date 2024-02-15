@@ -81,14 +81,14 @@ export default function CreateAccountScreen() {
 
           <TouchableOpacity
             className="py-4 rounded-3xl"
-            onPress={() => navigation.navigate("Login")}
+            onPress={() => navigation.navigate("SignUp")}
             style={{ backgroundColor: themeColors.bgbtn }}
           >
             <Text
               className="font-bold text-center text-white"
               style={{ fontSize: 20 }}
             >
-              CREATE ACCOUNT
+              CONTINUE
             </Text>
           </TouchableOpacity>
         </View>

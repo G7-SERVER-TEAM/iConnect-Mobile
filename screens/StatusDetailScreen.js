@@ -107,7 +107,7 @@ export default function StatusDetailScreen() {
             {/* ชื่อสถานที่ */}
             <Text
               style={{
-                alignSelf: "start",
+                alignSelf: "flex-start",
                 color: themeColors.text,
                 fontSize: 13,
                 marginTop: 15,
