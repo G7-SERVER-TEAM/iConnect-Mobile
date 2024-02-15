@@ -3,10 +3,9 @@ import { View, Text, Button, StyleSheet, TouchableOpacity } from 'react-native'
 import { CameraView, Camera } from 'expo-camera/next'
 import { useNavigation } from "@react-navigation/native";
 import { themeColors } from "../theme/index";
-import { AlignCenter } from 'react-native-feather';
 
 export default function ScanQRCodeScreen() {
-  const navigation = useNavigation();
+  const navigation = useNavigation()
   const [hasPermission, setHasPermission] = useState(false) //request permission for the camera
   const [scanData, setScanData] = useState()
 
@@ -28,7 +27,8 @@ export default function ScanQRCodeScreen() {
     setScanData(data)
     console.log(`Data: ${data}`)
     console.log(`Type: ${type}`)
-    alert(`Bar code with type ${type} and data ${data} has been scanned!`);
+    // alert(`Bar code with type ${type} and data ${data} has been scanned!`);
+    navigation.navigate("ScanSuccess", { data })
   }
 
   return (
@@ -58,13 +58,6 @@ frame to scan.`}
         }}
       />
       <View 
-        // style={{
-        //   marginTop: 20,
-        //   borderTopWidth: 2,
-        //   borderTopColor: "white",
-        //   borderTopStyle: "dotted",
-        //   width: 312,
-        // }}
         className="w-[312px] border-t-white border-t-[2px] border-t-dotted my-8"
     />
       <View style={styles.button}>
