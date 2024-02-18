@@ -25,7 +25,7 @@ export default function LoginScreen() {
     <View className="flex-1" style={{ backgroundColor: themeColors.bg }}>
       <SafeAreaView className="flex">
         <View style={{ flexDirection: "row", justifyContent: "flex-end", marginRight: 30 }}>
-          <TouchableOpacity onPress={() => navigation.navigate("SignUp")}>
+          <TouchableOpacity onPress={() => navigation.navigate("CreateAccount")}>
             <Text style={{ color: "white" }}>CREATE ACCOUNT</Text>
           </TouchableOpacity>
         </View>

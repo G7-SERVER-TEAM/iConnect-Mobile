@@ -34,7 +34,7 @@ const BottomTab = ({ onPress, onPress2, onPressQRCode }) => {
       </TouchableOpacity>
       <TouchableOpacity
         style={{
-            marginTop: -65,
+          marginTop: -65,
           width: 75,
           height: 75, 
           backgroundColor: themeColors.text,
