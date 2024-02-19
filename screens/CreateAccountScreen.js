@@ -9,18 +9,50 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 export default function CreateAccountScreen() {
   const navigation = useNavigation();
 
-  const [password1, setPassword1] = useState("");
-  const [showPassword1, setShowPassword1] = useState(false);
-
-  const [password2, setPassword2] = useState("");
-  const [showPassword2, setShowPassword2] = useState(false);
-
-  const toggleShowPassword1 = () => {
-    setShowPassword1(!showPassword1);
+  const [firstName, setFirstName] = useState("")
+  const [lastName, setLastName] = useState("")
+  const [email, setEmail] = useState("")
+  const [phone, setPhone] = useState("")
+  
+  const createUserInformation = async (information) => {
+    const ICONNECT_API = "http://192.168.1.5:8080/user/profile/create";
+    try {
+      const result = await fetch(ICONNECT_API, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(information),
+      });
+       if (result.ok) {
+        const responseBody = await result.text();
+        return responseBody;
+    } else {
+        throw new Error(`Error: ${result.status} - ${result.statusText}`);
+    }
+    } catch (err) {
+      throw err;
+    }
   };
-  const toggleShowPassword2 = () => {
-    setShowPassword2(!showPassword2);
+  
+  const handleSignUp = () => {
+    const userInformation = {
+      name: firstName,
+      surname: lastName,
+      email: email,
+      birth_date: new Date(),
+      phone_number: phone,
+      role_id: "1",
+    };
+    createUserInformation(userInformation).then(result => {
+      const user = JSON.parse(result);
+      const uid = user.result.uid;
+      navigation.navigate("SignUp", { uid })
+    }).catch(err => {
+      console.log(err);
+    });
   };
+
 
   return (
     <View className="flex-1" style={{ backgroundColor: themeColors.bg }}>
@@ -62,26 +94,30 @@ export default function CreateAccountScreen() {
           <TextInput
             className="p-4 bg-gray-100 text-gray-700 rounded-2xl mb-3"
             placeholder="Firstname"
+            onChangeText={newFirstName => setFirstName(newFirstName)}
           />
 
           <TextInput
             className="p-4 bg-gray-100 text-gray-700 rounded-2xl mb-3"
             placeholder="Lastname"
+            onChangeText={newLastName => setLastName(newLastName)}
           />
 
           <TextInput
             className="p-4 bg-gray-100 text-gray-700 rounded-2xl mb-3"
             placeholder="Email"
+            onChangeText={newEmail => setEmail(newEmail)}
           />
 
           <TextInput
             className="p-4 bg-gray-100 text-gray-700 rounded-2xl mb-3"
             placeholder="Phone Number"
+            onChangeText={newPhone => setPhone(newPhone)}
           />
 
           <TouchableOpacity
             className="py-4 rounded-3xl"
-            onPress={() => navigation.navigate("SignUp")}
+            onPress={handleSignUp}
             style={{ backgroundColor: themeColors.bgbtn }}
           >
             <Text
