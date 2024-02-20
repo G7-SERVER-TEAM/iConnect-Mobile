@@ -5,11 +5,14 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import {ArrowLeftIcon} from 'react-native-heroicons/solid';
 import { useNavigation } from '@react-navigation/native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { useRoute } from '@react-navigation/native';
 
 
 
 export default function SignUpScreen() {
     const navigation = useNavigation();
+
+    const [email, setEmail] = useState('');
 
     const [password1, setPassword1] = useState(''); 
     const [showPassword1, setShowPassword1] = useState(false); 
@@ -23,6 +26,46 @@ export default function SignUpScreen() {
      const toggleShowPassword2 = () => { 
         setShowPassword2(!showPassword2); 
     }; 
+
+    const route = useRoute();
+
+    const createAccountInformation = async (information) => {
+        const ICONNECT_API = "http://10.4.13.25:8081/auth/email/sign-up";
+        try {
+          const result = await fetch(ICONNECT_API, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(information),
+          });
+           if (result.ok) {
+            const responseBody = await result.text();
+            return responseBody;
+        } else {
+            throw new Error(`Error: ${result.status} - ${result.statusText}`);
+        }
+        } catch (err) {
+          throw err;
+        }
+      };
+
+    const handleCreateAccount = () => {
+        if (password1 != password2) {
+            throw new error("Password isn't match.");
+        }
+        const uid = route.params?.uid;
+        const accountInformation = {
+          email: email,
+          password: password1,
+          uid: uid
+        };
+        createAccountInformation(accountInformation).then(result => {
+          navigation.navigate("Login")
+        }).catch(err => {
+          console.log(err);
+        });
+      };
 
   return (
     <View className="flex-1" style={{backgroundColor: themeColors.bg}}>
@@ -54,7 +97,8 @@ export default function SignUpScreen() {
         <View className="form space-y-2">
             <TextInput
                 className="p-4 bg-gray-100 text-gray-700 rounded-2xl mb-3"
-                placeholder='Username'
+                placeholder='Email'
+                onChangeText={setEmail}
             />
             <View className="p-4 bg-gray-100 text-gray-700 rounded-2xl mb-3" style={{flexDirection: 'row'}}>
                 <TextInput
@@ -93,7 +137,7 @@ export default function SignUpScreen() {
     
             <TouchableOpacity
                 className="py-4 rounded-3xl"
-                onPress={()=> navigation.navigate('Login')}
+                onPress={handleCreateAccount}
                 style={{backgroundColor: themeColors.bgbtn}}
             >
                 <Text className="font-bold text-center text-white" style={{fontSize: 20}}>
