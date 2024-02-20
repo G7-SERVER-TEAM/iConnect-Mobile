@@ -7,12 +7,20 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import BottomTab from "../components/bottomTab";
 import HistoriesCard from "../components/historiesCard";
 
-export default function HistoryScreen() {
-  const navigation = useNavigation();
+const HistoryScreen = () => {
   const route = useRoute();
+  const navigation = useNavigation();
 
   const uid = route.params.uid;
   const access_token = route.params.access_token;
+
+  const [currentPrice, setCurrentPrice] = useState("")
+  const [currentArea, setCurrentArea] = useState("")
+
+  const [parkingHistory, setParkingHistory] = useState({})
+  // const [historyList, setHistoryList] = useState([])
+  let historyList = []
+
   // const historiesData = [
   //   {
   //     id: "1",
@@ -40,8 +48,8 @@ export default function HistoryScreen() {
   //   },
   // ];
 
-  const handleParkingHistories = (uid, token) => {
-    const searchParkingFinish = async () => {
+  const  handleParkingHistory = (uid, access_token) => {
+    const searchParkingHistory = async () => {
       const ICONNECT_API = `http://10.4.13.25:8082/transaction/history/${uid}`;
       const information = {
         status: "FINISH",
@@ -51,7 +59,7 @@ export default function HistoryScreen() {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`,
+            "Authorization": `Bearer ${access_token}`,
           },
           body: JSON.stringify(information),
         });
@@ -65,6 +73,16 @@ export default function HistoryScreen() {
         throw err;
       }
     };
+
+    const getCurrentDate=(time)=>{
+      var checkInTime = new Date(time)
+
+      var date = checkInTime.getDate();
+      var month = checkInTime.getMonth() + 1;
+      var year = checkInTime.getFullYear();
+      
+      return date + '/' + month + '/' + year;
+   }
 
     const getTimeDescription = (time) => {
       const start_time = new Date(time);
@@ -84,7 +102,7 @@ export default function HistoryScreen() {
         millisecond: start_time.getMilliseconds(),
       };
     };
-
+    
     const searchAreaLocation = async (id) => {
       const ICONNECT_API = `http://10.4.13.25:8082/area/id/${id}`;
       try {
@@ -117,13 +135,13 @@ export default function HistoryScreen() {
     }
 
     const getCurrentPrice = async (id) => {
-      const ICONNECT_API = `http://10.4.13.25:8082/transaction/price/${id}`;
+      const ICONNECT_API = `http://localhost:8082/transaction/price/${id}`;
       try {
         const result = await fetch(ICONNECT_API, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`,
+            "Authorization": `Bearer ${access_token}`,
           },
         });
         if (result.ok) {
@@ -137,31 +155,81 @@ export default function HistoryScreen() {
       }
     };
 
-    searchParkingActive().then((result) => {
-      const transaction = JSON.parse(result);
-      const start_time = getTimeDescription(transaction.result.start_time);
+    searchParkingHistory().then((result) => {
+      const data = JSON.parse(result);
 
-      searchAreaLocation(transaction.result.area_id).then(result => {
-        const location = JSON.parse(result);
-        setArea(location.result.area_name);
-      });
+      const transactionList = data.result
+      // let historyList = []
 
-      const currentTime = convertCurrentTimeFormat(new Date(transaction.result.start_time), new Date());
+      // transactionList.forEach(
+      //   async transaction => {
+      //   console.log(transaction)
 
-      getCurrentPrice(transaction.result.transaction_id).then(result => {
-        const price = JSON.parse(result);
-        setCurrentPrice(price.result);
-      })
+      //   const currentDate = getCurrentDate(transaction.start_time);
+      //   const start_time = getTimeDescription(transaction.start_time);
+      //   const end_time = getTimeDescription(transaction.end_time);
+      //   const currentTime = convertCurrentTimeFormat(new Date(transaction.start_time), new Date());
 
-      setLicense(transaction.result.license_plate);
-      setTime(`${start_time.hour}:${start_time.minute}:${start_time.second}`);
-      setParkingTime(currentTime);
+      //   const currPrice = getCurrentPrice(transaction.transaction_id).then(result => {
+      //     const price = JSON.parse(result);
+      //   })
+
+      //   const currLocation = searchAreaLocation(transaction.result.area_id).then(result => {
+      //     const location = JSON.parse(result);
+      //     location.result.area_name;
+      //   })
+        
+      //   const parkingHistory = {
+      //     name: currLocation,
+      //     date: currentDate,
+      //     timestamp: {
+      //       start: `${start_time.hour}:${start_time.minute}:${start_time.second}`,
+      //       end: `${end_time.hour}:${end_time.minute}:${end_time.second}`,
+      //     },
+      //     license_plate: transaction.license_plate,
+      //     price: currPrice,
+      //     duration: currentTime,
+      //   }
+
+      //   historyList.push(parkingHistory)
+      // });
+      
+      transactionList.forEach(
+          async transaction =>{
+      
+          const currentDate = getCurrentDate(transaction.start_time);
+          const start_time = getTimeDescription(transaction.start_time);
+          const end_time = getTimeDescription(transaction.end_time);
+          const currentTime = convertCurrentTimeFormat(new Date(transaction.start_time), new Date());
+      
+          const priceResult = await getCurrentPrice(transaction.result.transaction_id);
+          const price = JSON.parse(priceResult);
+          setCurrentPrice(price.result);
+      
+          const areaResult = await searchAreaLocation(transaction.result.transaction_id);
+          const area = JSON.parse(areaResult);
+          setCurrentArea(area.result);
+
+          setParkingHistory({
+            name: currentArea,
+            date: currentDate,
+            timestamp: {
+              start: `${start_time.hour}:${start_time.minute}:${start_time.second}`,
+              end: `${end_time.hour}:${end_time.minute}:${end_time.second}`,
+            },
+            license_plate: transaction.result.license_plate,
+            price: currentPrice,
+            duration: currentTime,
+          });
+      
+          historyList.push(parkingHistory);
+        }
+    );           
     });
   };
-
-  const handleNavigate = (screenName) => {
-    navigation.navigate(screenName, {uid, access_token})
-  }
+  
+  handleParkingHistory(uid, access_token);
+  console.log(`History List: ${historyList.length}`);
 
   return (
     <SafeAreaView
@@ -170,7 +238,7 @@ export default function HistoryScreen() {
     >
       <View className="bg-white flex-row border rounded-b-[25px] justify-between items-center h-[90px] px-[22px]">
         <View className="items-center">
-          <TouchableOpacity onPress={handleNavigate("Home")}>
+          <TouchableOpacity onPress={() => navigation.navigate("Home")}>
             <Image
               source={require("../assets/images/WelcomePicture.png")}
               style={{ width: 50, height: 50, marginLeft: 10 }}
@@ -191,18 +259,18 @@ export default function HistoryScreen() {
           <TouchableOpacity
             className="justify-center"
             style={{ marginLeft: "auto" }}
-            onPress={handleNavigate("Profile")}
+            onPress={() => navigation.navigate("Profile")}
           >
             <MaterialCommunityIcons
               name="bell"
               style={{ color: themeColors.text, fontSize: 25 }}
-              onPress={handleNavigate("Notification")}
+              onPress={() => navigation.navigate("Notification")}
             />
           </TouchableOpacity>
           <TouchableOpacity
             className="justify-center"
             style={{ textAlign: "center", marginLeft: 10 }}
-            onPress={handleNavigate("Profile")}
+            onPress={() => navigation.navigate("Profile")}
           >
             <MaterialCommunityIcons
               name="account"
@@ -221,7 +289,7 @@ export default function HistoryScreen() {
       </View>
       <View className="flex-1 items-center">
         <FlatList
-          data={historiesData}
+          data={historyList}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => <HistoriesCard data={item} />}
         />
@@ -299,11 +367,12 @@ export default function HistoryScreen() {
       {/* menu bar  */}
       <View style={{ marginTop: "auto" }}>
         <BottomTab
-          onPress={handleNavigate("Home")}
-          onPress2={handleNavigate("History")}
+          onPress={() => navigation.navigate("Home", {uid, access_token})}
+          onPress2={() => navigation.navigate("History")}
         />
       </View>
     </SafeAreaView>
   );
 };
 
+export default HistoryScreen;

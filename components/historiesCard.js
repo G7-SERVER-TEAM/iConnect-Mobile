@@ -4,7 +4,6 @@ import { themeColors } from "../theme";
 import {  MaterialCommunityIcons } from "@expo/vector-icons";
 
 const HistoriesCard = ( data ) => {
-    console.log(data);
   return (
     <View 
       className=

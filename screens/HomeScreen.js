@@ -480,9 +480,9 @@ export default function HomeScreen() {
       {/* menu bar  */}
       <View style={{ marginTop: "auto" }}>
         <BottomTab
-          onPress={() => navigation.navigate("Home")}
+          onPress={() => navigation.navigate("Home", { uid, access_token })}
           onPressQRCode={handleQRCode}
-          onPress2={() => navigation.navigate("History")}
+          onPress2={() => navigation.navigate("History", { uid, access_token })}
         />
       </View>
     </SafeAreaView>
