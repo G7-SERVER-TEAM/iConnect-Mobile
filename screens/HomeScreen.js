@@ -220,6 +220,10 @@ export default function HomeScreen() {
     navigation.navigate("ScanQRCode", { uid, access_token });
   };
 
+  const handleStatusDetail = () => {
+    navigation.navigate("StatusDetail", { uid, access_token })
+  }
+
   return (
     <SafeAreaView
       className="flex-1"
@@ -348,7 +352,7 @@ export default function HomeScreen() {
           </Text>
 
           <TouchableOpacity
-            onPress={() => navigation.navigate("StatusDetail")}
+            onPress={handleStatusDetail}
             style={{
               backgroundColor: "white",
               marginLeft: 25,

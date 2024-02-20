@@ -1,8 +1,9 @@
 import { View, Text, Image, TouchableOpacity, Dimensions } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { themeColors } from "../theme";
 import { useNavigation } from "@react-navigation/native";
+import { useRoute } from "@react-navigation/native";
 const { width, height } = Dimensions.get("window");
 import {
   AntDesign,
@@ -16,6 +17,141 @@ import BottomTab from "../components/bottomTab";
 
 export default function StatusDetailScreen() {
   const navigation = useNavigation();
+
+  const route = useRoute();
+  const uid = route.params.uid;
+  const access_token = route.params.access_token;
+
+  const [license, setLicense] = useState("");
+  const [time, setTime] = useState("");
+  const [area, setArea] = useState("");
+  const [parkingTime, setParkingTime] = useState("");
+  const [currentPrice, setCurrentPrice] = useState("");
+
+  const handleParkingDetail = (uid, token) => {
+    const searchParkingActive = async () => {
+      const ICONNECT_API = `http://10.4.13.25:8082/transaction/progress/${uid}`;
+      const information = {
+        status: "ACTIVE",
+      };
+      try {
+        const result = await fetch(ICONNECT_API, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`,
+          },
+          body: JSON.stringify(information),
+        });
+        if (result.ok) {
+          const responseBody = await result.text();
+          return responseBody;
+        } else {
+          throw new Error(`Error: ${result.status} - ${result.statusText}`);
+        }
+      } catch (err) {
+        throw err;
+      }
+    };
+
+    const getTimeDescription = (time) => {
+      const start_time = new Date(time);
+      return {
+        year: start_time.getFullYear(),
+        month: start_time.getMonth(),
+        day: start_time.getDate(),
+        hour: start_time.getHours(),
+        minute:
+          start_time.getMinutes() < 10
+            ? `0${start_time.getMinutes()}`
+            : start_time.getMinutes(),
+        second:
+          start_time.getSeconds() < 10
+            ? `0${start_time.getSeconds()}`
+            : start_time.getSeconds(),
+        millisecond: start_time.getMilliseconds(),
+      };
+    };
+
+    const searchAreaLocation = async (id) => {
+      const ICONNECT_API = `http://10.4.13.25:8082/area/id/${id}`;
+      try {
+        const result = await fetch(ICONNECT_API, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`,
+          },
+        });
+        if (result.ok) {
+          const responseBody = await result.text();
+          return responseBody;
+        } else {
+          throw new Error(`Error: ${result.status} - ${result.statusText}`);
+        }
+      } catch (err) {
+        throw err;
+      }
+    };
+
+    const calculateDifferentTime = (start_time, end_time) => {
+      const timeDifference = end_time.getTime() - start_time.getTime();
+      return timeDifference / (1000 * 60 * 60);
+    }
+
+    const convertCurrentTimeFormat = (start_time, end_time) => {
+      const currentTime = calculateDifferentTime(start_time, end_time);
+      return `${Math.floor(currentTime)} hrs ${Math.floor((currentTime - Math.floor(currentTime)) * 60)} mins`;
+    }
+
+    const getCurrentPrice = async (id) => {
+      const ICONNECT_API = `http://10.4.13.25:8082/transaction/price/${id}`;
+      try {
+        const result = await fetch(ICONNECT_API, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`,
+          },
+        });
+        if (result.ok) {
+          const responseBody = await result.text();
+          return responseBody;
+        } else {
+          throw new Error(`Error: ${result.status} - ${result.statusText}`);
+        }
+      } catch (err) {
+        throw err;
+      }
+    };
+
+    searchParkingActive().then((result) => {
+      const transaction = JSON.parse(result);
+      const start_time = getTimeDescription(transaction.result.start_time);
+
+      searchAreaLocation(transaction.result.area_id).then(result => {
+        const location = JSON.parse(result);
+        setArea(location.result.area_name);
+      });
+
+      const currentTime = convertCurrentTimeFormat(new Date(transaction.result.start_time), new Date());
+
+      getCurrentPrice(transaction.result.transaction_id).then(result => {
+        const price = JSON.parse(result);
+        setCurrentPrice(price.result);
+      })
+
+      setLicense(transaction.result.license_plate);
+      setTime(`${start_time.hour}:${start_time.minute}:${start_time.second}`);
+      setParkingTime(currentTime);
+    });
+  };
+
+  handleParkingDetail(uid, access_token);
+
+  const handleParkingSummary = () => {
+    navigation.navigate("Summary", { uid, access_token });
+  }
 
   return (
     <SafeAreaView
@@ -109,13 +245,13 @@ export default function StatusDetailScreen() {
               style={{
                 alignSelf: "flex-start",
                 color: themeColors.text,
-                fontSize: 13,
+                fontSize: 18,
                 marginTop: 15,
                 marginRight: 'auto',
                 fontWeight: "bold",
               }}
             >
-              FUTURE PARK RANGSIT
+              {area}
             </Text>
 
             {/* เรทราคาต่อชั่วโมง */}
@@ -172,7 +308,7 @@ export default function StatusDetailScreen() {
                 color: themeColors.text,
               }}
             >
-              40
+              {currentPrice}
             </Text>
             <Text
               style={{
@@ -197,7 +333,7 @@ export default function StatusDetailScreen() {
               fontWeight: "bold",
             }}
           >
-            LICENSE PLATE : 1กข1111
+            LICENSE PLATE : {license}
           </Text>
 
           <View
@@ -221,7 +357,7 @@ export default function StatusDetailScreen() {
                 fontWeight: "bold",
               }}
             >
-              11:30:00 a.m.
+              {time}
             </Text>
           </View>
           <View
@@ -245,14 +381,14 @@ export default function StatusDetailScreen() {
                 fontWeight: "bold",
               }}
             >
-              2 hrs 00 mins
+              {parkingTime}
             </Text>
           </View>
         </TouchableOpacity>
 
         <TouchableOpacity
           className="py-4 rounded-3xl"
-          onPress={() => navigation.navigate("Summary")}
+          onPress={handleParkingSummary}
           style={{
             backgroundColor: themeColors.bgbtn,
             marginLeft: 25,
