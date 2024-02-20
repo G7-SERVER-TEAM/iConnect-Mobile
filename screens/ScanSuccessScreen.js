@@ -7,11 +7,19 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 export default function ScanSuccessScreen() {
     const navigation = useNavigation()
     const route = useRoute()
+
+    // QRCode's data
     const dataString = route.params?.data
     const data = JSON.parse(dataString);
     const username = data.name 
     const license_plate = data.license_plate
     const check_in_time = data.start_time
+    const transaction_id = data.transaction_id
+
+    const uid = route.params.uid;
+    const access_token = route.params.access_token;
+
+    console.log(data)
 
     const getCheckInDate=(time)=>{
         var checkInTime = new Date(time)
@@ -33,6 +41,34 @@ export default function ScanSuccessScreen() {
    
         return hour + ':' + minute + ':' + second;
      }
+
+     const startTransaction = async (transaction_id, access_token) => {
+        const ICONNECT_API = `http://10.4.13.25:8082/transaction/qrcode/update/${transaction_id}`;
+        const information = {
+          "uid": uid
+        };
+        try {
+          const result = await fetch(ICONNECT_API, {
+            method: 'PATCH', 
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${access_token}`
+            },
+            body: JSON.stringify(information)
+          })
+          if (result.ok) {
+            const responseBody = await result.text();
+            console.log('Succeed!')
+            return responseBody;
+          } else {
+            throw new Error(`Error: ${result.status} - ${result.statusText}`);
+          }
+        } catch (err) {
+          throw err;
+        }
+     };
+     
+     startTransaction(transaction_id, access_token)
 
     return (
         <View style={styles.container}>
@@ -156,7 +192,7 @@ export default function ScanSuccessScreen() {
           <View style={styles.button}>
             <TouchableOpacity
               className="py-4 rounded-3xl px-8"
-              onPress={() => navigation.navigate("Home")}
+              onPress={() => navigation.navigate("Home", {uid, access_token})}
               style={{
                 backgroundColor: themeColors.bgbtn,
                 marginLeft: 25,
