@@ -216,6 +216,10 @@ export default function HomeScreen() {
 
   handleParkingStatus(uid, access_token);
 
+  const handleQRCode = () => {
+    navigation.navigate("ScanQRCode", { uid, access_token });
+  };
+
   return (
     <SafeAreaView
       className="flex-1"
@@ -259,7 +263,7 @@ export default function HomeScreen() {
           <TouchableOpacity
             className="justify-center"
             style={{ marginLeft: "auto" }}
-            onPress={handleProfile}
+            // onPress={}
           >
             <MaterialCommunityIcons
               name="bell"
@@ -473,7 +477,7 @@ export default function HomeScreen() {
       <View style={{ marginTop: "auto" }}>
         <BottomTab
           onPress={() => navigation.navigate("Home")}
-          onPressQRCode={() => navigation.navigate("ScanQRCode")}
+          onPressQRCode={handleQRCode}
           onPress2={() => navigation.navigate("History")}
         />
       </View>
