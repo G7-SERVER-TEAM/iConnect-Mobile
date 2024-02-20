@@ -20,12 +20,17 @@ import {
 import NewsCard from "../components/newsCard";
 import { FlatList } from "react-native";
 import BottomTab from "../components/bottomTab";
-import { RNCamera } from 'react-native-camera';
+import { RNCamera } from "react-native-camera";
+import { useRoute } from "@react-navigation/native";
 
 export default function HomeScreen() {
   const navigation = useNavigation();
-  
-  
+
+  const route = useRoute();
+
+  const uid = route.params.uid;
+  const access_token = route.params.access_token;
+
   const newsData = [
     {
       id: "1",
@@ -41,6 +46,10 @@ export default function HomeScreen() {
       image: "/Users/sittipaksrisawas/Desktop/TestApp/assets/images/new1.jpeg",
     },
   ];
+
+  const handleProfile = () => {
+    navigation.navigate("Profile", { uid, access_token });
+  };
 
   return (
     <SafeAreaView
@@ -85,7 +94,7 @@ export default function HomeScreen() {
           <TouchableOpacity
             className="justify-center"
             style={{ marginLeft: "auto" }}
-            onPress={() => navigation.navigate("Profile")}
+            onPress={handleProfile}
           >
             <MaterialCommunityIcons
               name="bell"

@@ -1,7 +1,6 @@
 import { View, Text, TouchableOpacity, Image, TextInput } from "react-native";
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { ArrowLeftIcon } from "react-native-heroicons/solid";
 import { themeColors } from "../theme";
 import { useNavigation } from "@react-navigation/native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -18,7 +17,7 @@ export default function LoginScreen() {
   };
 
   const searchUserAccount = async (information) => {
-    const ICONNECT_API = "http://192.168.1.5:8081/auth/email/login";
+    const ICONNECT_API = "http://10.4.13.25:8081/auth/email/login";
     try {
       const result = await fetch(ICONNECT_API, {
         method: "POST",
