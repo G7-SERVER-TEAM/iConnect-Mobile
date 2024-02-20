@@ -13,12 +13,12 @@ import {
 import NewsCard from "../components/newsCard";
 import { FlatList } from "react-native";
 import { Bold } from "react-native-feather";
-import { useRoute } from "@react-navigation/native";
+import { useRoute } from '@react-navigation/native';
 
 export default function ProfileScreen() {
   const navigation = useNavigation();
-  const route = useRoute();
-
+  const route = useRoute()
+  
   const uid = route.params.uid;
   const access_token = route.params.access_token;
 
@@ -64,6 +64,7 @@ export default function ProfileScreen() {
   };
   
   profile();
+
 
   return (
     <SafeAreaView

@@ -44,6 +44,7 @@ export default function LoginScreen() {
     };
     searchUserAccount(accountInformation).then(result => {
       const account = JSON.parse(result);
+      console.log(account);
       const uid = account.uid;
       const access_token = account.access_token;
       navigation.navigate("Home", { uid, access_token });
