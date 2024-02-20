@@ -6,7 +6,7 @@ import {
   Dimensions,
   ScrollView,
 } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { themeColors } from "../theme";
 import { useNavigation } from "@react-navigation/native";
@@ -27,9 +27,17 @@ export default function HomeScreen() {
   const navigation = useNavigation();
 
   const route = useRoute();
-
   const uid = route.params.uid;
   const access_token = route.params.access_token;
+
+  const [fname, setFirstName] = useState("")
+  const [lname, setLastName] = useState("")
+
+  const [license, setLicense] = useState("");
+  const [time, setTime] = useState("");
+  const [area, setArea] = useState("");
+  const [parkingTime, setParkingTime] = useState("");
+  const [currentPrice, setCurrentPrice] = useState("");
 
   const newsData = [
     {
@@ -47,9 +55,166 @@ export default function HomeScreen() {
     },
   ];
 
+  const handleParkingStatus = (uid, token) => {
+    const searchParkingActive = async () => {
+      const ICONNECT_API = `http://10.4.13.25:8082/transaction/progress/${uid}`;
+      const information = {
+        status: "ACTIVE",
+      };
+      try {
+        const result = await fetch(ICONNECT_API, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`,
+          },
+          body: JSON.stringify(information),
+        });
+        if (result.ok) {
+          const responseBody = await result.text();
+          return responseBody;
+        } else {
+          throw new Error(`Error: ${result.status} - ${result.statusText}`);
+        }
+      } catch (err) {
+        throw err;
+      }
+    };
+
+    const getTimeDescription = (time) => {
+      const start_time = new Date(time);
+      return {
+        year: start_time.getFullYear(),
+        month: start_time.getMonth(),
+        day: start_time.getDate(),
+        hour: start_time.getHours(),
+        minute:
+          start_time.getMinutes() < 10
+            ? `0${start_time.getMinutes()}`
+            : start_time.getMinutes(),
+        second:
+          start_time.getSeconds() < 10
+            ? `0${start_time.getSeconds()}`
+            : start_time.getSeconds(),
+        millisecond: start_time.getMilliseconds(),
+      };
+    };
+
+    const searchAreaLocation = async (id) => {
+      const ICONNECT_API = `http://10.4.13.25:8082/area/id/${id}`;
+      try {
+        const result = await fetch(ICONNECT_API, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`,
+          },
+        });
+        if (result.ok) {
+          const responseBody = await result.text();
+          return responseBody;
+        } else {
+          throw new Error(`Error: ${result.status} - ${result.statusText}`);
+        }
+      } catch (err) {
+        throw err;
+      }
+    };
+
+    const calculateDifferentTime = (start_time, end_time) => {
+      const timeDifference = end_time.getTime() - start_time.getTime();
+      return timeDifference / (1000 * 60 * 60);
+    }
+
+    const convertCurrentTimeFormat = (start_time, end_time) => {
+      const currentTime = calculateDifferentTime(start_time, end_time);
+      return `${Math.floor(currentTime)} hrs ${Math.floor((currentTime - Math.floor(currentTime)) * 60)} mins`;
+    }
+
+    const getCurrentPrice = async (id) => {
+      const ICONNECT_API = `http://10.4.13.25:8082/transaction/price/${id}`;
+      try {
+        const result = await fetch(ICONNECT_API, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`,
+          },
+        });
+        if (result.ok) {
+          const responseBody = await result.text();
+          return responseBody;
+        } else {
+          throw new Error(`Error: ${result.status} - ${result.statusText}`);
+        }
+      } catch (err) {
+        throw err;
+      }
+    };
+
+    searchParkingActive().then((result) => {
+      const transaction = JSON.parse(result);
+      const start_time = getTimeDescription(transaction.result.start_time);
+
+      searchAreaLocation(transaction.result.area_id).then(result => {
+        const location = JSON.parse(result);
+        setArea(location.result.area_name);
+      });
+
+      const currentTime = convertCurrentTimeFormat(new Date(transaction.result.start_time), new Date());
+
+      getCurrentPrice(transaction.result.transaction_id).then(result => {
+        const price = JSON.parse(result);
+        setCurrentPrice(price.result);
+      })
+
+      setLicense(transaction.result.license_plate);
+      setTime(`${start_time.hour}:${start_time.minute}:${start_time.second}`);
+      setParkingTime(currentTime);
+    });
+  };
+
   const handleProfile = () => {
     navigation.navigate("Profile", { uid, access_token });
   };
+
+  const searchUserAccount = async (uid, access_token) => {
+    const ICONNECT_API = `http://10.4.13.25:8080/user/id/${uid}`;
+    try {
+      const result = await fetch(ICONNECT_API, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${access_token}`
+        }
+      });
+      if (result.ok) {
+        const responseBody = await result.text();
+        return responseBody;
+      } else {
+        throw new Error(`Error: ${result.status} - ${result.statusText}`);
+      }
+    } catch (err) {
+      throw err;
+    }
+  };
+
+  const profile = async () => {
+    try {
+      const result = await searchUserAccount(uid, access_token);
+      const accountData = JSON.parse(result);
+
+      setFirstName(accountData.result.name);
+      setLastName(accountData.result.surname);
+
+    } catch (error) {
+      console.error('Error fetching or parsing user account data:', error);
+    }
+  };
+  
+  profile();
+
+  handleParkingStatus(uid, access_token);
 
   return (
     <SafeAreaView
@@ -106,7 +271,7 @@ export default function HomeScreen() {
           <TouchableOpacity
             className="justify-center"
             style={{ textAlign: "center", marginLeft: 10 }}
-            onPress={() => navigation.navigate("Profile")}
+            onPress={handleProfile}
           >
             <MaterialCommunityIcons
               name="account"
@@ -127,7 +292,7 @@ export default function HomeScreen() {
             }}
           >
             {" "}
-            Hi!, Server G7
+            Hi!, {fname} {lname}
           </Text>
         </View>
       </View>
@@ -199,7 +364,7 @@ export default function HomeScreen() {
                 fontWeight: "bold",
               }}
             >
-              FUTURE PARK RANGSIT
+              {area}
             </Text>
             <View
               style={{
@@ -220,7 +385,7 @@ export default function HomeScreen() {
                 fontWeight: "bold",
               }}
             >
-              LICENSE PLATE : 1กข1111
+              LICENSE PLATE : {license}
             </Text>
 
             <View
@@ -244,7 +409,7 @@ export default function HomeScreen() {
                   fontWeight: "bold",
                 }}
               >
-                11:30:00 a.m.
+                {time}
               </Text>
             </View>
 
@@ -269,7 +434,7 @@ export default function HomeScreen() {
                   fontWeight: "bold",
                 }}
               >
-                2 hrs 00 mins
+                {parkingTime}
               </Text>
             </View>
 
@@ -297,7 +462,7 @@ export default function HomeScreen() {
                   fontWeight: "bold",
                 }}
               >
-                40 BATHS
+                {currentPrice} BATHS
               </Text>
             </View>
           </TouchableOpacity>
