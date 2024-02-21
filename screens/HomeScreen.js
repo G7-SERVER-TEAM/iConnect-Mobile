@@ -104,7 +104,7 @@ export default function HomeScreen() {
     };
 
     const searchAreaLocation = async (id) => {
-      const ICONNECT_API = `http://10.4.13.25:8082/area/id/${id}`;
+      const ICONNECT_API = `http://10.4.13.48:8082/area/id/${id}`;
       try {
         const result = await fetch(ICONNECT_API, {
           method: "GET",
@@ -166,6 +166,7 @@ export default function HomeScreen() {
 
       searchAreaLocation(transaction.result.area_id).then((result) => {
         const location = JSON.parse(result);
+        console.log(location)
         setArea(location.result.area_name);
       });
 
