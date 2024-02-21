@@ -77,6 +77,7 @@ export default function HomeScreen() {
           throw new Error(`Error: ${result.status} - ${result.statusText}`);
         }
       } catch (err) {
+        console.log(err);
         throw err;
       }
     };

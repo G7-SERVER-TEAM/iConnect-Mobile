@@ -184,13 +184,19 @@ const HistoryScreen = () => {
         setHistoryParkingList(result);
       } catch (error) {
         console.error("Error fetching parking history:", error);
-      } finally {
-        console.log(historyParkingList);
       }
     };
 
     fetchData();
   }, [uid, access_token]);
+
+  const handleHome = () => {
+    navigation.navigate("Home", { uid, access_token });
+  };
+
+  const handleProfile = () => {
+    navigation.navigate("Profile", { uid, access_token });
+  };
 
   return (
     <SafeAreaView
@@ -199,9 +205,7 @@ const HistoryScreen = () => {
     >
       <View className="bg-white flex-row border rounded-b-[25px] justify-between items-center h-[90px] px-[22px]">
         <View className="items-center">
-          <TouchableOpacity
-            onPress={navigation.navigate("Home", { uid, access_token })}
-          >
+          <TouchableOpacity onPress={handleHome}>
             <Image
               source={require("../assets/images/WelcomePicture.png")}
               style={{ width: 50, height: 50, marginLeft: 10 }}
@@ -235,9 +239,7 @@ const HistoryScreen = () => {
           <TouchableOpacity
             className="justify-center"
             style={{ textAlign: "center", marginLeft: 10 }}
-            onPress={() =>
-              navigation.navigate("Profile", { uid, access_token })
-            }
+            onPress={handleProfile}
           >
             <MaterialCommunityIcons
               name="account"
@@ -266,7 +268,7 @@ const HistoryScreen = () => {
       {/* menu bar  */}
       <View style={{ marginTop: "auto" }}>
         <BottomTab
-          onPress={navigation.navigate("Home", { uid, access_token })}
+          onPress={handleHome}
           onPress2={() => navigation.navigate("History", { uid, access_token })}
         />
       </View>
