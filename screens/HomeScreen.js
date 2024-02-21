@@ -6,7 +6,7 @@ import {
   Dimensions,
   ScrollView,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { themeColors } from "../theme";
 import { useNavigation } from "@react-navigation/native";
@@ -38,6 +38,8 @@ export default function HomeScreen() {
   const [area, setArea] = useState("");
   const [parkingTime, setParkingTime] = useState("");
   const [currentPrice, setCurrentPrice] = useState("");
+
+  const [visible, setVisible] = useState(true);
 
   const newsData = [
     {
@@ -77,7 +79,7 @@ export default function HomeScreen() {
           throw new Error(`Error: ${result.status} - ${result.statusText}`);
         }
       } catch (err) {
-        console.log(err);
+        setVisible(false)
         throw err;
       }
     };
@@ -157,6 +159,9 @@ export default function HomeScreen() {
 
     searchParkingActive().then((result) => {
       const transaction = JSON.parse(result);
+
+      if (transaction.result.length != 0) setVisible(true);
+
       const start_time = getTimeDescription(transaction.result.start_time);
 
       searchAreaLocation(transaction.result.area_id).then((result) => {
@@ -217,9 +222,10 @@ export default function HomeScreen() {
     }
   };
 
+  // Call functions
   profile();
-
   handleParkingStatus(uid, access_token);
+
 
   const handleQRCode = () => {
     navigation.navigate("ScanQRCode", { uid, access_token });
@@ -232,6 +238,8 @@ export default function HomeScreen() {
   const handleHistory = () => {
     navigation.navigate("History", { uid, access_token });
   };
+
+  console.log(visible)
 
   return (
     <SafeAreaView
@@ -361,130 +369,135 @@ export default function HomeScreen() {
           >
             Parking Status
           </Text>
-
-          <TouchableOpacity
-            onPress={handleStatusDetail}
-            style={{
-              backgroundColor: "white",
-              marginLeft: 25,
-              marginRight: 25,
-              borderRadius: 20,
-              overflow: "hidden",
-              height: 180,
-              width: "auto",
-            }}
-          >
-            <Text
+          { visible ?
+            <TouchableOpacity
+              onPress={handleStatusDetail}
               style={{
-                alignSelf: "center",
-                color: themeColors.text,
-                fontSize: 20,
-                marginTop: 15,
-                fontWeight: "bold",
+                backgroundColor: "white",
+                marginLeft: 25,
+                marginRight: 25,
+                borderRadius: 20,
+                overflow: "hidden",
+                height: 180,
+                width: "auto",
               }}
             >
-              {area}
-            </Text>
-            <View
-              style={{
-                borderBottomWidth: 2,
-                borderBottomColor: themeColors.text,
-                width: "85%",
-                alignSelf: "center",
-                marginTop: 5,
-              }}
-            />
-
-            <Text
-              style={{
-                alignSelf: "center",
-                color: "black",
-                fontSize: 16,
-                marginTop: 10,
-                fontWeight: "bold",
-              }}
-            >
-              LICENSE PLATE : {license}
-            </Text>
-
-            <View
-              style={{ justifyContent: "space-between", flexDirection: "row" }}
-            >
               <Text
                 style={{
-                  marginLeft: 25,
-                  marginTop: 10,
-                  color: "gray",
-                }}
-              >
-                Check-In Time
-              </Text>
-
-              <Text
-                style={{
-                  marginTop: 10,
-                  marginRight: 25,
-                  color: "black",
-                  fontWeight: "bold",
-                }}
-              >
-                {time}
-              </Text>
-            </View>
-
-            <View
-              style={{ justifyContent: "space-between", flexDirection: "row" }}
-            >
-              <Text
-                style={{
-                  marginLeft: 25,
-                  marginTop: 10,
-                  color: "gray",
-                }}
-              >
-                Current Parking for
-              </Text>
-
-              <Text
-                style={{
-                  marginTop: 10,
-                  marginRight: 25,
-                  color: "black",
-                  fontWeight: "bold",
-                }}
-              >
-                {parkingTime}
-              </Text>
-            </View>
-
-            <View
-              style={{ justifyContent: "space-between", flexDirection: "row" }}
-            >
-              <Text
-                style={{
-                  marginLeft: 25,
-                  marginTop: 10,
+                  alignSelf: "center",
                   color: themeColors.text,
-                  fontSize: 18,
+                  fontSize: 20,
+                  marginTop: 15,
                   fontWeight: "bold",
                 }}
               >
-                Total
+                {area}
               </Text>
+              <View
+                style={{
+                  borderBottomWidth: 2,
+                  borderBottomColor: themeColors.text,
+                  width: "85%",
+                  alignSelf: "center",
+                  marginTop: 5,
+                }}
+              />
 
               <Text
                 style={{
-                  marginRight: 25,
+                  alignSelf: "center",
+                  color: "black",
+                  fontSize: 16,
                   marginTop: 10,
-                  color: themeColors.text,
-                  fontSize: 18,
                   fontWeight: "bold",
                 }}
               >
-                {currentPrice} BATHS
+                LICENSE PLATE : {license}
               </Text>
-            </View>
-          </TouchableOpacity>
+
+              <View
+                style={{ justifyContent: "space-between", flexDirection: "row" }}
+              >
+                <Text
+                  style={{
+                    marginLeft: 25,
+                    marginTop: 10,
+                    color: "gray",
+                  }}
+                >
+                  Check-In Time
+                </Text>
+
+                <Text
+                  style={{
+                    marginTop: 10,
+                    marginRight: 25,
+                    color: "black",
+                    fontWeight: "bold",
+                  }}
+                >
+                  {time}
+                </Text>
+              </View>
+
+              <View
+                style={{ justifyContent: "space-between", flexDirection: "row" }}
+              >
+                <Text
+                  style={{
+                    marginLeft: 25,
+                    marginTop: 10,
+                    color: "gray",
+                  }}
+                >
+                  Current Parking for
+                </Text>
+
+                <Text
+                  style={{
+                    marginTop: 10,
+                    marginRight: 25,
+                    color: "black",
+                    fontWeight: "bold",
+                  }}
+                >
+                  {parkingTime}
+                </Text>
+              </View>
+
+              <View
+                style={{ justifyContent: "space-between", flexDirection: "row" }}
+              >
+                <Text
+                  style={{
+                    marginLeft: 25,
+                    marginTop: 10,
+                    color: themeColors.text,
+                    fontSize: 18,
+                    fontWeight: "bold",
+                  }}
+                >
+                  Total
+                </Text>
+
+                <Text
+                  style={{
+                    marginRight: 25,
+                    marginTop: 10,
+                    color: themeColors.text,
+                    fontSize: 18,
+                    fontWeight: "bold",
+                  }}
+                >
+                  {currentPrice} BATHS
+                </Text>
+              </View>
+            </TouchableOpacity>
+          : 
+          <View className="flex justify-center items-center h-full">
+            <Text className="text-stone-500 text-lg">You are not currently parking anywhere</Text>
+          </View>
+          }
         </View>
       </ScrollView>
 
