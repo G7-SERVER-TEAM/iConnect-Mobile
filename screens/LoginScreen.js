@@ -17,7 +17,7 @@ export default function LoginScreen() {
   };
 
   const searchUserAccount = async (information) => {
-    const ICONNECT_API = "http://10.4.13.25:8081/auth/email/login";
+    const ICONNECT_API = "http://10.4.13.48:8081/auth/email/login";
     try {
       const result = await fetch(ICONNECT_API, {
         method: "POST",

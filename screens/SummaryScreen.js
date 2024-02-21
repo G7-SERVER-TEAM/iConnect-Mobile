@@ -33,7 +33,7 @@ export default function SummaryScreen() {
 
   const handleParkingSummary = (uid, token) => {
     const searchParkingActive = async () => {
-      const ICONNECT_API = `http://10.4.13.25:8082/transaction/progress/${uid}`;
+      const ICONNECT_API = `http://10.4.13.48:8082/transaction/progress/${uid}`;
       const information = {
         status: "ACTIVE",
       };
@@ -82,7 +82,7 @@ export default function SummaryScreen() {
     };
 
     const searchAreaLocation = async (id) => {
-      const ICONNECT_API = `http://10.4.13.25:8082/area/id/${id}`;
+      const ICONNECT_API = `http://10.4.13.48:8082/area/id/${id}`;
       try {
         const result = await fetch(ICONNECT_API, {
           method: "GET",
@@ -115,7 +115,7 @@ export default function SummaryScreen() {
     };
 
     const getCurrentPrice = async (id) => {
-      const ICONNECT_API = `http://10.4.13.25:8082/transaction/price/${id}`;
+      const ICONNECT_API = `http://10.4.13.48:8082/transaction/price/${id}`;
       try {
         const result = await fetch(ICONNECT_API, {
           method: "GET",

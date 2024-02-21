@@ -43,7 +43,7 @@ export default function ScanSuccessScreen() {
      }
 
      const startTransaction = async (transaction_id, access_token) => {
-        const ICONNECT_API = `http://10.4.13.25:8082/transaction/qrcode/update/${transaction_id}`;
+        const ICONNECT_API = `http://10.4.13.48:8082/transaction/qrcode/update/${transaction_id}`;
         const information = {
           "uid": uid
         };
