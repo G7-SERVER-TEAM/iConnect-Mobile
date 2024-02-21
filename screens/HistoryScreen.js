@@ -184,11 +184,13 @@ const HistoryScreen = () => {
         setHistoryParkingList(result);
       } catch (error) {
         console.error("Error fetching parking history:", error);
+      } finally {
+        console.log(historyParkingList);
       }
     };
 
     fetchData();
-  }, []);
+  }, [uid, access_token]);
 
   return (
     <SafeAreaView
@@ -197,7 +199,9 @@ const HistoryScreen = () => {
     >
       <View className="bg-white flex-row border rounded-b-[25px] justify-between items-center h-[90px] px-[22px]">
         <View className="items-center">
-          <TouchableOpacity onPress={() => navigation.navigate("Home")}>
+          <TouchableOpacity
+            onPress={navigation.navigate("Home", { uid, access_token })}
+          >
             <Image
               source={require("../assets/images/WelcomePicture.png")}
               style={{ width: 50, height: 50, marginLeft: 10 }}
@@ -218,7 +222,9 @@ const HistoryScreen = () => {
           <TouchableOpacity
             className="justify-center"
             style={{ marginLeft: "auto" }}
-            onPress={() => navigation.navigate("Profile")}
+            onPress={() =>
+              navigation.navigate("Profile", { uid, access_token })
+            }
           >
             <MaterialCommunityIcons
               name="bell"
@@ -229,7 +235,9 @@ const HistoryScreen = () => {
           <TouchableOpacity
             className="justify-center"
             style={{ textAlign: "center", marginLeft: 10 }}
-            onPress={() => navigation.navigate("Profile")}
+            onPress={() =>
+              navigation.navigate("Profile", { uid, access_token })
+            }
           >
             <MaterialCommunityIcons
               name="account"
@@ -249,15 +257,17 @@ const HistoryScreen = () => {
       <View className="flex-1 items-center">
         <FlatList
           data={historyParkingList}
-          keyExtractor={(item) => (item.id ? item.id.toString() : Math.random().toString())}
+          keyExtractor={(item) =>
+            item.id ? item.id.toString() : Math.random().toString()
+          }
           renderItem={({ item }) => <HistoriesCard data={item} />}
         />
       </View>
       {/* menu bar  */}
       <View style={{ marginTop: "auto" }}>
         <BottomTab
-          onPress={() => navigation.navigate("Home", { uid, access_token })}
-          onPress2={() => navigation.navigate("History")}
+          onPress={navigation.navigate("Home", { uid, access_token })}
+          onPress2={() => navigation.navigate("History", { uid, access_token })}
         />
       </View>
     </SafeAreaView>

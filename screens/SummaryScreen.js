@@ -173,7 +173,7 @@ export default function SummaryScreen() {
 
   const handlePaymentComplete = () => {
     const updateTransaction = async (transaction_id, access_token) => {
-      const ICONNECT_API = `http://10.4.13.25:8082/transaction/${transaction_id}`;
+      const ICONNECT_API = `http://10.4.13.48:8082/transaction/${transaction_id}`;
       const information = {
         status: "FINISH",
         end_time: updateTime,
@@ -200,7 +200,7 @@ export default function SummaryScreen() {
     };
 
     const createCashPayment = async (transaction_id, access_token) => {
-      const ICONNECT_API = `http://10.4.13.25:8082/transaction/payment/cash/create/${transaction_id}`;
+      const ICONNECT_API = `http://10.4.13.48:8082/transaction/payment/cash/create/${transaction_id}`;
       try {
         const result = await fetch(ICONNECT_API, {
           method: "POST",
@@ -252,7 +252,7 @@ export default function SummaryScreen() {
         }}
       >
         <View style={{ flexDirection: "row", justifyContent: "start" }}>
-          <TouchableOpacity onPress={() => navigation.navigate("Home")}>
+          <TouchableOpacity onPress={() => navigation.navigate("Home", { uid, access_token })}>
             <Image
               source={require("../assets/images/WelcomePicture.png")}
               style={{ width: 50, height: 50, marginLeft: 10 }}
@@ -262,7 +262,7 @@ export default function SummaryScreen() {
           <TouchableOpacity
             className="justify-center"
             style={{ marginLeft: "auto" }}
-            onPress={() => navigation.navigate("Home")}
+            onPress={() => navigation.navigate("Home", { uid, access_token })}
           >
             <Text
               className="font-bold"
@@ -279,7 +279,7 @@ export default function SummaryScreen() {
           <TouchableOpacity
             className="justify-center"
             style={{ marginLeft: "auto" }}
-            onPress={() => navigation.navigate("Profile")}
+            onPress={() => navigation.navigate("Notification", { uid, access_token })}
           >
             <MaterialCommunityIcons
               name="bell"
@@ -290,7 +290,7 @@ export default function SummaryScreen() {
           <TouchableOpacity
             className="justify-center"
             style={{ textAlign: "center", marginLeft: 10 }}
-            onPress={() => navigation.navigate("Profile")}
+            onPress={() => navigation.navigate("Profile", { uid, access_token })}
           >
             <MaterialCommunityIcons
               name="account"
@@ -558,8 +558,8 @@ export default function SummaryScreen() {
       {/* menu bar  */}
       <View style={{ marginTop: "auto" }}>
         <BottomTab
-          onPress={() => navigation.navigate("Home")}
-          onPress2={() => navigation.navigate("History")}
+          onPress={() => navigation.navigate("Home", { uid, access_token })}
+          onPress2={() => navigation.navigate("History", { uid, access_token })}
         />
       </View>
     </SafeAreaView>
