@@ -30,8 +30,8 @@ export default function HomeScreen() {
   const uid = route.params.uid;
   const access_token = route.params.access_token;
 
-  const [fname, setFirstName] = useState("")
-  const [lname, setLastName] = useState("")
+  const [fname, setFirstName] = useState("");
+  const [lname, setLastName] = useState("");
 
   const [license, setLicense] = useState("");
   const [time, setTime] = useState("");
@@ -66,7 +66,7 @@ export default function HomeScreen() {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`,
+            Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify(information),
         });
@@ -107,7 +107,7 @@ export default function HomeScreen() {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`,
+            Authorization: `Bearer ${token}`,
           },
         });
         if (result.ok) {
@@ -124,21 +124,23 @@ export default function HomeScreen() {
     const calculateDifferentTime = (start_time, end_time) => {
       const timeDifference = end_time.getTime() - start_time.getTime();
       return timeDifference / (1000 * 60 * 60);
-    }
+    };
 
     const convertCurrentTimeFormat = (start_time, end_time) => {
       const currentTime = calculateDifferentTime(start_time, end_time);
-      return `${Math.floor(currentTime)} hrs ${Math.floor((currentTime - Math.floor(currentTime)) * 60)} mins`;
-    }
+      return `${Math.floor(currentTime)} hrs ${Math.floor(
+        (currentTime - Math.floor(currentTime)) * 60
+      )} mins`;
+    };
 
     const getCurrentPrice = async (id) => {
-      const ICONNECT_API = `http://10.4.13.25:8082/transaction/price/${id}`;
+      const ICONNECT_API = `http://10.4.13.48:8082/transaction/price/${id}`;
       try {
         const result = await fetch(ICONNECT_API, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`,
+            Authorization: `Bearer ${token}`,
           },
         });
         if (result.ok) {
@@ -156,17 +158,20 @@ export default function HomeScreen() {
       const transaction = JSON.parse(result);
       const start_time = getTimeDescription(transaction.result.start_time);
 
-      searchAreaLocation(transaction.result.area_id).then(result => {
+      searchAreaLocation(transaction.result.area_id).then((result) => {
         const location = JSON.parse(result);
         setArea(location.result.area_name);
       });
 
-      const currentTime = convertCurrentTimeFormat(new Date(transaction.result.start_time), new Date());
+      const currentTime = convertCurrentTimeFormat(
+        new Date(transaction.result.start_time),
+        new Date()
+      );
 
-      getCurrentPrice(transaction.result.transaction_id).then(result => {
+      getCurrentPrice(transaction.result.transaction_id).then((result) => {
         const price = JSON.parse(result);
         setCurrentPrice(price.result);
-      })
+      });
 
       setLicense(transaction.result.license_plate);
       setTime(`${start_time.hour}:${start_time.minute}:${start_time.second}`);
@@ -179,14 +184,14 @@ export default function HomeScreen() {
   };
 
   const searchUserAccount = async (uid, access_token) => {
-    const ICONNECT_API = `http://10.4.13.25:8080/user/id/${uid}`;
+    const ICONNECT_API = `http://10.4.13.48:8080/user/id/${uid}`;
     try {
       const result = await fetch(ICONNECT_API, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${access_token}`
-        }
+          Authorization: `Bearer ${access_token}`,
+        },
       });
       if (result.ok) {
         const responseBody = await result.text();
@@ -206,12 +211,11 @@ export default function HomeScreen() {
 
       setFirstName(accountData.result.name);
       setLastName(accountData.result.surname);
-
     } catch (error) {
-      console.error('Error fetching or parsing user account data:', error);
+      console.error("Error fetching or parsing user account data:", error);
     }
   };
-  
+
   profile();
 
   handleParkingStatus(uid, access_token);
@@ -221,8 +225,12 @@ export default function HomeScreen() {
   };
 
   const handleStatusDetail = () => {
-    navigation.navigate("StatusDetail", { uid, access_token })
-  }
+    navigation.navigate("StatusDetail", { uid, access_token });
+  };
+
+  const handleHistory = () => {
+    navigation.navigate("History", { uid, access_token });
+  };
 
   return (
     <SafeAreaView
@@ -240,7 +248,9 @@ export default function HomeScreen() {
         }}
       >
         <View style={{ flexDirection: "row", justifyContent: "start" }}>
-          <TouchableOpacity onPress={() => navigation.navigate("Home")}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("Home", { uid, access_token })}
+          >
             <Image
               source={require("../assets/images/WelcomePicture.png")}
               style={{ width: 50, height: 50, marginLeft: 10 }}
@@ -250,7 +260,7 @@ export default function HomeScreen() {
           <TouchableOpacity
             className="justify-center"
             style={{ marginLeft: "auto" }}
-            onPress={() => navigation.navigate("Home")}
+            onPress={() => navigation.navigate("Home", { uid, access_token })}
           >
             <Text
               className="font-bold"
@@ -482,7 +492,7 @@ export default function HomeScreen() {
         <BottomTab
           onPress={() => navigation.navigate("Home", { uid, access_token })}
           onPressQRCode={handleQRCode}
-          onPress2={() => navigation.navigate("History", { uid, access_token })}
+          onPress2={handleHistory}
         />
       </View>
     </SafeAreaView>

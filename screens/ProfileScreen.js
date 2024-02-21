@@ -87,7 +87,7 @@ export default function ProfileScreen() {
           <View className="flex-row justify-start">
             <TouchableOpacity
               style={{ marginLeft: "auto" }}
-              onPress={() => navigation.goBack()}
+              onPress={() => navigation.goBack({ uid, access_token})}
             >
               <ArrowLeftIcon size="20" color="black" />
             </TouchableOpacity>

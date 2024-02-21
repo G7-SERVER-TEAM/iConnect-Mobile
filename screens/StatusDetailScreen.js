@@ -170,7 +170,7 @@ export default function StatusDetailScreen() {
         }}
       >
         <View style={{ flexDirection: "row", justifyContent: "start" }}>
-          <TouchableOpacity onPress={() => navigation.navigate("Home")}>
+          <TouchableOpacity onPress={() => navigation.navigate("Home", { uid, access_token })}>
             <Image
               source={require("../assets/images/WelcomePicture.png")}
               style={{ width: 50, height: 50, marginLeft: 10 }}
@@ -180,7 +180,7 @@ export default function StatusDetailScreen() {
           <TouchableOpacity
             className="justify-center"
             style={{ marginLeft: "auto" }}
-            onPress={() => navigation.navigate("Home")}
+            onPress={() => navigation.navigate("Home", { uid, access_token })}
           >
             <Text
               className="font-bold"
@@ -197,7 +197,7 @@ export default function StatusDetailScreen() {
           <TouchableOpacity
             className="justify-center"
             style={{ marginLeft: "auto" }}
-            onPress={() => navigation.navigate("Profile")}
+            onPress={() => navigation.navigate("Profile", { uid, access_token })}
           >
             <MaterialCommunityIcons
               name="bell"
@@ -209,7 +209,7 @@ export default function StatusDetailScreen() {
           <TouchableOpacity
             className="justify-center"
             style={{ textAlign: "center", marginLeft: 10 }}
-            onPress={() => navigation.navigate("Profile")}
+            onPress={() => navigation.navigate("Profile", { uid, access_token })}
           >
             <MaterialCommunityIcons
               name="account"
@@ -410,8 +410,8 @@ export default function StatusDetailScreen() {
       {/* menu bar  */}
       <View style={{marginTop: 'auto'}}>
         <BottomTab
-          onPress={() => navigation.navigate("Home")}
-          onPress2={() => navigation.navigate("History")}
+          onPress={() => navigation.navigate("Home", { uid, access_token })}
+          onPress2={() => navigation.navigate("History", { uid, access_token })}
         />
       </View>
     </SafeAreaView>
