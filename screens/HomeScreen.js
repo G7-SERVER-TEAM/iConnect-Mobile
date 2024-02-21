@@ -57,7 +57,7 @@ export default function HomeScreen() {
 
   const handleParkingStatus = (uid, token) => {
     const searchParkingActive = async () => {
-      const ICONNECT_API = `http://10.4.13.25:8082/transaction/progress/${uid}`;
+      const ICONNECT_API = `http://10.4.13.48:8082/transaction/progress/${uid}`;
       const information = {
         status: "ACTIVE",
       };
