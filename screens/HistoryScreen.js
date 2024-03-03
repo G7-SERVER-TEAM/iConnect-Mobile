@@ -1,40 +1,208 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, TouchableOpacity, Image, FlatList } from "react-native";
 import { themeColors } from "../theme";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
 import BottomTab from "../components/bottomTab";
 import HistoriesCard from "../components/historiesCard";
 
 const HistoryScreen = () => {
+  const route = useRoute();
   const navigation = useNavigation();
-  const historiesData = [
-    {
-      id: "1",
-      name: "Future Park Rangsit",
-      date: "21/10/2023",
-      timestamp: {
-        start: "09:30:10 p.m.",
-        end: "12:30:00 p.m.",
-      },
-      license_plate: "1กก1111",
-      price: "60",
-      duration: "3",
-    },
-    {
-      id: "2",
-      name: "Central World",
-      date: "20/10/2023",
-      timestamp: {
-        start: "16:00:30 p.m.",
-        end: "18:00:10 p.m.",
-      },
-      license_plate: "1กข1234",
-      price: "70",
-      duration: "3",
-    },
-  ];
+
+  const uid = route.params.uid;
+  const access_token = route.params.access_token;
+
+  const handleParkingHistory = (uid, access_token) => {
+    const searchParkingHistory = async () => {
+      const ICONNECT_API = `http://10.4.13.48:8082/transaction/history/${uid}`;
+      const information = {
+        status: "FINISH",
+      };
+      try {
+        const result = await fetch(ICONNECT_API, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${access_token}`,
+          },
+          body: JSON.stringify(information),
+        });
+        if (result.ok) {
+          const responseBody = await result.text();
+          return responseBody;
+        } else {
+          throw new Error(`Error: ${result.status} - ${result.statusText}`);
+        }
+      } catch (err) {
+        throw err;
+      }
+    };
+
+    const getCurrentDate = (time) => {
+      var checkInTime = new Date(time);
+
+      var date = checkInTime.getDate();
+      var month = checkInTime.getMonth() + 1;
+      var year = checkInTime.getFullYear();
+
+      return date + "/" + month + "/" + year;
+    };
+
+    const getTimeDescription = (time) => {
+      const currentTime = new Date(time);
+      return {
+        year: currentTime.getFullYear(),
+        month:
+          currentTime.getMonth() < 10
+            ? `0${currentTime.getMonth()}`
+            : currentTime.getMonth(),
+        day:
+          currentTime.getDate() < 10
+            ? `0${currentTime.getDate()}`
+            : currentTime.getDate(),
+        hour: currentTime.getHours(),
+        minute:
+          currentTime.getMinutes() < 10
+            ? `0${currentTime.getMinutes()}`
+            : currentTime.getMinutes(),
+        second:
+          currentTime.getSeconds() < 10
+            ? `0${currentTime.getSeconds()}`
+            : currentTime.getSeconds(),
+        millisecond: currentTime.getMilliseconds(),
+      };
+    };
+
+    const searchAreaLocation = async (id) => {
+      const ICONNECT_API = `http://10.4.13.48:8082/area/id/${id}`;
+      try {
+        const result = await fetch(ICONNECT_API, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${access_token}`,
+          },
+        });
+        if (result.ok) {
+          const responseBody = await result.text();
+          return responseBody;
+        } else {
+          throw new Error(`Error: ${result.status} - ${result.statusText}`);
+        }
+      } catch (err) {
+        throw err;
+      }
+    };
+
+    const calculateDifferentTime = (start_time, end_time) => {
+      const timeDifference = end_time.getTime() - start_time.getTime();
+      return timeDifference / (1000 * 60 * 60);
+    };
+
+    const convertCurrentTimeFormat = (start_time, end_time) => {
+      const currentTime = calculateDifferentTime(start_time, end_time);
+      return `${Math.floor(currentTime)} hrs ${Math.floor(
+        (currentTime - Math.floor(currentTime)) * 60
+      )} mins`;
+    };
+
+    const getCurrentPrice = async (id) => {
+      const ICONNECT_API = `http://10.4.13.48:8082/transaction/price/complete/${id}`;
+      try {
+        const result = await fetch(ICONNECT_API, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${access_token}`,
+          },
+        });
+        if (result.ok) {
+          const responseBody = await result.text();
+          return responseBody;
+        } else {
+          throw new Error(`Error: ${result.status} - ${result.statusText}`);
+        }
+      } catch (err) {
+        throw err;
+      }
+    };
+
+    async function processParkingHistory() {
+      try {
+        const result = await searchParkingHistory();
+        const data = JSON.parse(result);
+        const txnList = data.result;
+
+        let historyList = [];
+
+        for (const transaction of txnList) {
+          const currentDate = getCurrentDate(transaction.start_time);
+          const start_time = getTimeDescription(transaction.start_time);
+          const end_time = getTimeDescription(transaction.end_time);
+          const currentTime = convertCurrentTimeFormat(
+            new Date(transaction.start_time),
+            new Date(transaction.end_time)
+          );
+
+          const currentArea = await searchAreaLocation(transaction.area_id);
+          const areaResult = JSON.parse(currentArea);
+
+          const currentPrice = await getCurrentPrice(
+            transaction.transaction_id
+          );
+          const priceResult = JSON.parse(currentPrice);
+
+          const parkingHistory = {
+            name: areaResult.result.area_name,
+            date: currentDate,
+            timestamp: {
+              start: `${start_time.hour}:${start_time.minute}:${start_time.second}`,
+              end: `${end_time.hour}:${end_time.minute}:${end_time.second}`,
+            },
+            license_plate: transaction.license_plate,
+            price: priceResult.result,
+            duration: currentTime,
+          };
+
+          historyList.push({ ...parkingHistory });
+        }
+        return historyList;
+      } catch (error) {
+        console.error("Error processing parking history:", error);
+        return [];
+      }
+    }
+
+    // Call the function
+    const historyList = processParkingHistory();
+
+    return historyList;
+  };
+
+  const [historyParkingList, setHistoryParkingList] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const result = await handleParkingHistory(uid, access_token);
+        setHistoryParkingList(result);
+      } catch (error) {
+        console.error("Error fetching parking history:", error);
+      }
+    };
+
+    fetchData();
+  }, [uid, access_token]);
+
+  const handleHome = () => {
+    navigation.navigate("Home", { uid, access_token });
+  };
+
+  const handleProfile = () => {
+    navigation.navigate("Profile", { uid, access_token });
+  };
 
   return (
     <SafeAreaView
@@ -43,7 +211,7 @@ const HistoryScreen = () => {
     >
       <View className="bg-white flex-row border rounded-b-[25px] justify-between items-center h-[90px] px-[22px]">
         <View className="items-center">
-          <TouchableOpacity onPress={() => navigation.navigate("Home")}>
+          <TouchableOpacity onPress={handleHome}>
             <Image
               source={require("../assets/images/WelcomePicture.png")}
               style={{ width: 50, height: 50, marginLeft: 10 }}
@@ -64,7 +232,9 @@ const HistoryScreen = () => {
           <TouchableOpacity
             className="justify-center"
             style={{ marginLeft: "auto" }}
-            onPress={() => navigation.navigate("Profile")}
+            onPress={() =>
+              navigation.navigate("Profile", { uid, access_token })
+            }
           >
             <MaterialCommunityIcons
               name="bell"
@@ -75,7 +245,7 @@ const HistoryScreen = () => {
           <TouchableOpacity
             className="justify-center"
             style={{ textAlign: "center", marginLeft: 10 }}
-            onPress={() => navigation.navigate("Profile")}
+            onPress={handleProfile}
           >
             <MaterialCommunityIcons
               name="account"
@@ -94,86 +264,18 @@ const HistoryScreen = () => {
       </View>
       <View className="flex-1 items-center">
         <FlatList
-          data={historiesData}
-          keyExtractor={(item) => item.id}
+          data={historyParkingList}
+          keyExtractor={(item) =>
+            item.id ? item.id.toString() : Math.random().toString()
+          }
           renderItem={({ item }) => <HistoriesCard data={item} />}
         />
       </View>
-      {/* <View className="flex-1 items-center"> */}
-      {/* <View 
-                className=
-                    "bg-white flex rounded-[25px] h-[15vh] w-[93vw] px-[22px] pt-[16px] mb-5"
-                    >
-                        <View className="flex-row justify-between items-center mb-1">
-                            <MaterialCommunityIcons 
-                                name='check-circle'
-                                style={{
-                                    color:themeColors.bgbtn,
-                                    fontSize: 30,
-                                    display: 'flex'
-                                }}
-                                />
-                            <Text className="flex font-semibold text-[20px]"
-                                style={{color: themeColors.text}}
-                            >
-                                Future Park Rangsit
-                            </Text>
-                        </View>
-                        <View className="border-[1px] mb-2" style={{borderColor: themeColors.text}}/>
-                        <View className="flex gap-2">
-                            <View className="flex-row justify-between">
-                                <Text className="text-[14px]" style={{color: themeColors.des}}>21/10/2023</Text>
-                                <Text className="text-[14px]" style={{color: themeColors.des}}>09:30:10 p.m. - 12:30:00 p.m.</Text>
-                            </View>
-                            <View className="flex-row justify-between">
-                                <Text className="text-[14px]" style={{color: themeColors.des}}>LICENSE PLATE:  1กก1111</Text>
-                                <View className="flex-row">   
-                                    <Text className="text-[14px]" style={{color: themeColors.text}}>60 BATHS </Text>
-                                    <Text className="text-[14px]" style={{color: themeColors.des}}>(3 hours)</Text>
-                                </View> 
-                            </View>
-                        </View>
-                </View>
-                <View 
-                className=
-                    "bg-white flex rounded-[25px] h-[15vh] w-[93vw] px-[22px] pt-[16px] mb-5"
-                    >
-                        <View className="flex-row justify-between items-center mb-1">
-                            <MaterialCommunityIcons 
-                                name='check-circle'
-                                style={{
-                                    color:themeColors.bgbtn,
-                                    fontSize: 30,
-                                    display: 'flex'
-                                }}
-                                />
-                            <Text className="flex font-semibold text-[20px]"
-                                style={{color: themeColors.text}}
-                            >
-                                Central World
-                            </Text>
-                        </View>
-                        <View className="border-[1px] mb-2" style={{borderColor: themeColors.text}}/>
-                        <View className="flex gap-2">
-                            <View className="flex-row justify-between">
-                                <Text className="text-[14px]" style={{color: themeColors.des}}>20/10/2023</Text>
-                                <Text className="text-[14px]" style={{color: themeColors.des}}>16:00:30 p.m. - 18:00:10 p.m.</Text>
-                            </View>
-                            <View className="flex-row justify-between">
-                                <Text className="text-[14px]" style={{color: themeColors.des}}>LICENSE PLATE:  1กข1234</Text>
-                                <View className="flex-row">   
-                                    <Text className="text-[14px]" style={{color: themeColors.text}}>70 BATHS </Text>
-                                    <Text className="text-[14px]" style={{color: themeColors.des}}>(3 hours)</Text>
-                                </View> 
-                            </View>
-                        </View>
-                </View> */}
-      {/* </View> */}
       {/* menu bar  */}
       <View style={{ marginTop: "auto" }}>
         <BottomTab
-          onPress={() => navigation.navigate("Home")}
-          onPress2={() => navigation.navigate("History")}
+          onPress={handleHome}
+          onPress2={() => navigation.navigate("History", { uid, access_token })}
         />
       </View>
     </SafeAreaView>

@@ -3,11 +3,17 @@ import { View, Text, Button, StyleSheet, TouchableOpacity } from 'react-native'
 import { CameraView, Camera } from 'expo-camera/next'
 import { useNavigation } from "@react-navigation/native";
 import { themeColors } from "../theme/index";
+import { useRoute } from '@react-navigation/native';
 
 export default function ScanQRCodeScreen() {
   const navigation = useNavigation()
+  const route = useRoute()
+
   const [hasPermission, setHasPermission] = useState(false) //request permission for the camera
   const [scanData, setScanData] = useState()
+
+  const uid = route.params.uid;
+  const access_token = route.params.access_token;
 
   useEffect(() => {
     const getCameraPermissions = async() => {
@@ -28,7 +34,7 @@ export default function ScanQRCodeScreen() {
     console.log(`Data: ${data}`)
     console.log(`Type: ${type}`)
     // alert(`Bar code with type ${type} and data ${data} has been scanned!`);
-    navigation.navigate("ScanSuccess", { data })
+    navigation.navigate("ScanSuccess", { data, uid, access_token })
   }
 
   return (
@@ -63,7 +69,7 @@ frame to scan.`}
       <View style={styles.button}>
         <TouchableOpacity
           className="py-4 rounded-3xl px-8"
-          onPress={() => navigation.navigate("Home")}
+          onPress={() => navigation.navigate("Home", {uid, access_token})}
           style={{
             backgroundColor: themeColors.bgbtn,
             marginLeft: 25,

@@ -25,7 +25,7 @@ export default function CreateAccountScreen() {
   // const [birthDate, setBirthDate] = useState(dayjs());
 
   const createUserInformation = async (information) => {
-    const ICONNECT_API = "http://10.4.13.25:8080/user/profile/create";
+    const ICONNECT_API = "http://10.4.13.48:8080/user/profile/create";
     try {
       const result = await fetch(ICONNECT_API, {
         method: "POST",
