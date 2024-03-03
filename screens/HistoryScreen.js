@@ -51,21 +51,27 @@ const HistoryScreen = () => {
     };
 
     const getTimeDescription = (time) => {
-      const start_time = new Date(time);
+      const currentTime = new Date(time);
       return {
-        year: start_time.getFullYear(),
-        month: start_time.getMonth(),
-        day: start_time.getDate(),
-        hour: start_time.getHours(),
+        year: currentTime.getFullYear(),
+        month:
+          currentTime.getMonth() < 10
+            ? `0${currentTime.getMonth()}`
+            : currentTime.getMonth(),
+        day:
+          currentTime.getDate() < 10
+            ? `0${currentTime.getDate()}`
+            : currentTime.getDate(),
+        hour: currentTime.getHours(),
         minute:
-          start_time.getMinutes() < 10
-            ? `0${start_time.getMinutes()}`
-            : start_time.getMinutes(),
+          currentTime.getMinutes() < 10
+            ? `0${currentTime.getMinutes()}`
+            : currentTime.getMinutes(),
         second:
-          start_time.getSeconds() < 10
-            ? `0${start_time.getSeconds()}`
-            : start_time.getSeconds(),
-        millisecond: start_time.getMilliseconds(),
+          currentTime.getSeconds() < 10
+            ? `0${currentTime.getSeconds()}`
+            : currentTime.getSeconds(),
+        millisecond: currentTime.getMilliseconds(),
       };
     };
 
