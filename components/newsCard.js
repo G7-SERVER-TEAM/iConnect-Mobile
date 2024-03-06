@@ -7,7 +7,7 @@ const NewsCard = ({ news, onPress }) => {
   return (
     <TouchableOpacity onPress={onPress}>
       <View style={styles.cardContainer}>
-        <Image source={{ uri: news.image }} style={styles.cardImage} />
+        <Image source={{ uri: `http://192.168.1.5:8081${news.image}`}} style={styles.cardImage} />
         <View style={styles.cardContent}>
           <Text style={styles.cardTitle}>{news.title}</Text>
           <Text style={styles.cardDescription}>{news.description}</Text>
@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     overflow: "hidden",
     height: 250,
-    width: 300 
+    width: 300,
   },
   cardImage: {
     width: "100%",
@@ -46,9 +46,7 @@ const styles = StyleSheet.create({
   },
   cardDescription: {
     fontSize: 12,
-    
   },
 });
 
 export default NewsCard;
-
