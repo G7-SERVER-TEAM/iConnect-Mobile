@@ -16,6 +16,7 @@ import PaymentDetailScreen from '../screens/PaymentDetailScreen';
 import NotificationScreen from '../screens/NotificationScreen';
 import ScanQRCodeScreen from '../screens/ScanQRCodeScreen';
 import ScanSuccessScreen from '../screens/ScanSuccessScreen';
+import QrCodePaymentScreen from '../screens/QrCodePaymentScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -34,6 +35,7 @@ export default function AppNavigation() {
         <Stack.Screen name="History" options={{headerShown: false}} component={HistoryScreen} />
         <Stack.Screen name="Summary" options={{headerShown: false}} component={SummaryScreen} />
         <Stack.Screen name="PaymentDetail" options={{headerShown: false}} component={PaymentDetailScreen} />
+        <Stack.Screen name="QRPayment" options={{headerShown: false}} component={QrCodePaymentScreen} />
         <Stack.Screen name="PaymentSummary" options={{headerShown: false}} component={PaymentSummaryScreen} />
         <Stack.Screen name="Notification" options={{headerShown: false}} component={NotificationScreen} />
         <Stack.Screen name="ScanQRCode" options={{headerShown: false}} component={ScanQRCodeScreen} />

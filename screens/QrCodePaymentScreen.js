@@ -1,5 +1,5 @@
 import { View, Text, Image, TouchableOpacity } from "react-native";
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { themeColors } from "../theme";
 import { useNavigation } from "@react-navigation/native";
@@ -9,24 +9,10 @@ import {
   Ionicons,
   MaterialCommunityIcons,
 } from "@expo/vector-icons";
-import NewsCard from "../components/newsCard";
-import { FlatList } from "react-native";
 import BottomTab from "../components/bottomTab";
 
-export default function PaymentDetailScreen() {
+export default function QrCodePaymentScreen() {
   const navigation = useNavigation();
-  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(null);
-  useEffect(() => {
-    setSelectedPaymentMethod("cash");
-  }, []);
-
-  const handleContinue = () => {
-    if (selectedPaymentMethod === "cash") {
-      navigation.navigate("PaymentSummary");
-    } else if (selectedPaymentMethod === "card") {
-      navigation.navigate("QRPayment");
-    }
-  };
 
   return (
     <SafeAreaView
@@ -65,7 +51,7 @@ export default function PaymentDetailScreen() {
                 alignContent: "center",
               }}
             >
-              Payment
+              QR Code Payment
             </Text>
           </TouchableOpacity>
 
@@ -93,117 +79,63 @@ export default function PaymentDetailScreen() {
         </View>
       </View>
 
-      <View
-        style={{
-          margin: 20,
-          padding: 20,
-        }}
-      >
-        <Text
-          style={{
-            fontSize: 18,
-            fontWeight: "bold",
-            color: themeColors.text,
-            marginBottom: 15,
-          }}
-        >
-          Select Payment Method
-        </Text>
-
-        {/* Cash Payment */}
-        <TouchableOpacity
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "flex-start", // Align items to the left
-            marginBottom: 15,
-            backgroundColor: "white",
-            borderRadius: 15,
-            padding: 20,
-          }}
-          onPress={() => setSelectedPaymentMethod("cash")}
-        >
-          {selectedPaymentMethod === "cash" && (
-            <MaterialCommunityIcons
-              name="radiobox-marked"
-              style={{
-                color: themeColors.bgbtn,
-                fontSize: 30,
-              }}
-            />
-          )}
-          <Text
-            style={{
-              fontSize: 18,
-              color: themeColors.text,
-              marginLeft: 10,
-              fontWeight: "bold",
-            }}
-          >
-            CASH
-          </Text>
-          <MaterialCommunityIcons
-            name="cash"
-            style={{
-              color: themeColors.text,
-              fontSize: 35,
-              marginLeft: "auto",
-            }}
-          />
-        </TouchableOpacity>
-
-        {/* Card Payment */}
-        <TouchableOpacity
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "flex-start", // Align items to the left
-            marginBottom: 15,
-            backgroundColor: "white",
-            borderRadius: 15,
-            padding: 20,
-          }}
-          onPress={() => setSelectedPaymentMethod("card")}
-        >
-          {selectedPaymentMethod === "card" && (
-            <MaterialCommunityIcons
-              name="radiobox-marked"
-              style={{
-                color: themeColors.bgbtn,
-                fontSize: 30,
-              }}
-            />
-          )}
-          <Text
-            style={{
-              fontSize: 18,
-              color: themeColors.text,
-              marginLeft: 10,
-              fontWeight: "bold",
-            }}
-          >
-            QR PAYMENT
-          </Text>
-          <MaterialCommunityIcons
-            name="credit-card"
-            style={{
-              color: themeColors.text,
-              fontSize: 35,
-              marginLeft: "auto",
-            }}
-          />
-        </TouchableOpacity>
-      </View>
-
       <View>
+
+
+        <View
+          style={{
+            backgroundColor: "white",
+            borderRadius: 20,
+            padding: 10,
+            marginLeft: 30,
+            marginRight: 30,
+            marginTop: 20,
+          }}
+        >
+          {/* QR Code Image */}
+        <Image
+          source={require("../assets/images/qr_code_image.jpg")}
+          style={{
+            width: 350,
+            height: 350,
+            alignSelf: "center",
+            marginTop: 15,
+          }}
+        />
+
+          <Text
+            className="font-bold"
+            style={{
+              fontSize: 18,
+              color: themeColors.text,
+              textAlign: "center",
+              marginTop: 10,
+              marginBottom: 20,
+            }}
+          >
+            Please Scan QR Code for Payment.
+          </Text>
+          {/* เส้นใต้ */}
+          <View
+            style={{
+              borderBottomWidth: 1.5,
+              borderBottomColor: "grey",
+              width: "87%",
+              alignSelf: "center",
+              marginBottom: 15,
+            }}
+          />
+        </View>
+
         {/* ปุ่มกด */}
         <TouchableOpacity
           className="py-4 rounded-3xl"
-          onPress={handleContinue}
+          onPress={() => navigation.navigate("PaymentSummary")}
           style={{
             backgroundColor: themeColors.bgbtn,
-            marginLeft: 35,
-            marginRight: 35,
+            marginLeft: 25,
+            marginRight: 25,
+            marginTop: 10,
             
           }}
         >
@@ -214,6 +146,26 @@ export default function PaymentDetailScreen() {
             CONTINUE
           </Text>
         </TouchableOpacity>
+
+        <TouchableOpacity
+          className="py-4 rounded-3xl"
+          onPress={() => navigation.navigate("PaymentDetail")}
+          style={{
+            backgroundColor: "black",
+            marginLeft: 25,
+            marginRight: 25,
+            marginTop: 10,
+            
+          }}
+        >
+          <Text
+            className="font-bold text-center text-white"
+            style={{ fontSize: 20 }}
+          >
+            GO BACK
+          </Text>
+        </TouchableOpacity>
+        
       </View>
       {/* menu bar  */}
       <View style={{ marginTop: "auto" }}>
@@ -225,3 +177,4 @@ export default function PaymentDetailScreen() {
     </SafeAreaView>
   );
 }
+
