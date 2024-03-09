@@ -1,5 +1,5 @@
 import { View, Text, Image, TouchableOpacity } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { themeColors } from "../theme";
 import { useNavigation } from "@react-navigation/native";
@@ -13,9 +13,59 @@ import {
 import NewsCard from "../components/newsCard";
 import { FlatList } from "react-native";
 import { Bold } from "react-native-feather";
+import { useRoute } from '@react-navigation/native';
 
 export default function ProfileScreen() {
   const navigation = useNavigation();
+  const route = useRoute()
+  
+  const uid = route.params.uid;
+  const access_token = route.params.access_token;
+
+  const [email, setEmail] = useState("");
+  const [phoneNum, setPhoneNum] = useState("")
+  const [fname, setFirstName] = useState("")
+  const [lname, setLastName] = useState("")
+
+  const searchUserAccount = async (uid, access_token) => {
+    const ICONNECT_API = `http://10.4.13.48:8080/user/id/${uid}`;
+    try {
+      const result = await fetch(ICONNECT_API, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${access_token}`
+        }
+      });
+      if (result.ok) {
+        const responseBody = await result.text();
+        return responseBody;
+      } else {
+        throw new Error(`Error: ${result.status} - ${result.statusText}`);
+      }
+    } catch (err) {
+      throw err;
+    }
+  };
+
+  const profile = async () => {
+    try {
+      const result = await searchUserAccount(uid, access_token);
+      const accountData = JSON.parse(result);
+
+      setEmail(accountData.result.email);
+      setPhoneNum(accountData.result.phone_number);
+      setFirstName(accountData.result.name);
+      setLastName(accountData.result.surname);
+
+    } catch (error) {
+      console.error('Error fetching or parsing user account data:', error);
+    }
+  };
+  
+  profile();
+
+
   return (
     <SafeAreaView
       className="flex-1"
@@ -37,7 +87,7 @@ export default function ProfileScreen() {
           <View className="flex-row justify-start">
             <TouchableOpacity
               style={{ marginLeft: "auto" }}
-              onPress={() => navigation.goBack()}
+              onPress={() => navigation.goBack({ uid, access_token})}
             >
               <ArrowLeftIcon size="20" color="black" />
             </TouchableOpacity>
@@ -90,7 +140,7 @@ export default function ProfileScreen() {
                 marginBottom: 5,
               }}
             >
-              Server G7
+              {fname} {lname}
             </Text>
             <Text
               style={{
@@ -114,7 +164,7 @@ export default function ProfileScreen() {
             >
               Personal Information
             </Text>
-            <View style={{ flexDirection: "row", marginLeft: 40 }}>
+            {/* <View style={{ flexDirection: "row", marginLeft: 40 }}>
               <Text style={{ fontWeight: "bold" }}>Age</Text>
               <Text style={{ marginLeft: 100 }}>23</Text>
             </View>
@@ -123,12 +173,12 @@ export default function ProfileScreen() {
             >
               <Text style={{ fontWeight: "bold" }}>Birth Date</Text>
               <Text style={{ marginLeft: 55 }}>01-01-2000</Text>
-            </View>
+            </View> */}
             <View
               style={{ flexDirection: "row", marginLeft: 40, paddingTop: 10 }}
             >
               <Text style={{ fontWeight: "bold" }}>Phone Number</Text>
-              <Text style={{ marginLeft: 23 }}>012-345-6789</Text>
+              <Text style={{ marginLeft: 23 }}> {phoneNum}</Text>
             </View>
             <View
               style={{
@@ -139,7 +189,7 @@ export default function ProfileScreen() {
               }}
             >
               <Text style={{ fontWeight: "bold" }}>Email</Text>
-              <Text style={{ marginLeft: 87 }}>server@gmail.com</Text>
+              <Text style={{ marginLeft: 87 }}>{email}</Text>
             </View>
           </View>
         </View>
@@ -160,4 +210,4 @@ export default function ProfileScreen() {
       </View>
     </SafeAreaView>
   );
-}
+};

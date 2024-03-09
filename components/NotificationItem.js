@@ -29,6 +29,7 @@ const styles = StyleSheet.create({
   description: {
     fontSize: 12,
     color: '#898989',
+    paddingTop: 5,
   },
 });
 
@@ -39,7 +40,7 @@ const NotificationItem = ({ title, description, status }) => {
       <View style={styles.icon}>
         <Ionicons 
           name="person-outline"
-          size="large"
+          size={24}
           style={
             { color: '#FFFFFF' }
           }
