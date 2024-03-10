@@ -41,7 +41,7 @@ const HistoriesCard = ( data ) => {
                   <View className="flex-row justify-start">
                     <Text className="text-[14px]" style={{color: themeColors.des}}>Duration:</Text>
                     <View className="flex-row">
-                        <Text className="text-[14px] px-2 font-bold" style={{color: themeColors.des}}>{data.data.duration} hours</Text>
+                        <Text className="text-[14px] px-2 font-bold" style={{color: themeColors.des}}>{data.data.duration}</Text>
                     </View>
                   </View>
               </View>

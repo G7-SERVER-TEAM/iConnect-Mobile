@@ -10,9 +10,43 @@ import {
   MaterialCommunityIcons,
 } from "@expo/vector-icons";
 import BottomTab from "../components/bottomTab";
+import { useRoute } from "@react-navigation/native";
 
 export default function PaymentSuccessScreen() {
   const navigation = useNavigation();
+
+  const route = useRoute();
+
+  const uid = route.params.uid;
+  const access_token = route.params.access_token;
+  const paymentId = route.params.paymentId;
+
+  const handleUpdatePaymentStatus = async () => {
+    const ICONNECT_API = `http://192.168.1.5:8082/payment/${paymentId}`;
+    try {
+      const result = await fetch(ICONNECT_API, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${access_token}`,
+        },
+      });
+      if (result.ok) {
+        const responseBody = await result.text();
+        console.log("Succeed!");
+        return responseBody;
+      } else {
+        throw new Error(`Error: ${result.status} - ${result.statusText}`);
+      }
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  const handleGoToHome = () => {
+    handleUpdatePaymentStatus();
+    navigation.navigate("Home", { uid, access_token })
+  }
 
   return (
     <SafeAreaView
@@ -31,7 +65,9 @@ export default function PaymentSuccessScreen() {
         }}
       >
         <View style={{ flexDirection: "row", justifyContent: "start" }}>
-          <TouchableOpacity onPress={() => navigation.navigate("Home")}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("Home", { uid, access_token })}
+          >
             <Image
               source={require("../assets/images/WelcomePicture.png")}
               style={{ width: 50, height: 50, marginLeft: 10 }}
@@ -41,7 +77,7 @@ export default function PaymentSuccessScreen() {
           <TouchableOpacity
             className="justify-center"
             style={{ marginLeft: "auto" }}
-            onPress={() => navigation.navigate("Home")}
+            onPress={() => navigation.navigate("Home", {uid, access_token})}
           >
             <Text
               className="font-bold"
@@ -58,7 +94,7 @@ export default function PaymentSuccessScreen() {
           <TouchableOpacity
             className="justify-center"
             style={{ marginLeft: "auto" }}
-            onPress={() => navigation.navigate("Profile")}
+            onPress={() => navigation.navigate("Profile", { uid, access_token })}
           >
             <MaterialCommunityIcons
               name="bell"
@@ -69,7 +105,7 @@ export default function PaymentSuccessScreen() {
           <TouchableOpacity
             className="justify-center"
             style={{ textAlign: "center", marginLeft: 10 }}
-            onPress={() => navigation.navigate("Profile")}
+            onPress={() => navigation.navigate("Profile", { uid, access_token })}
           >
             <MaterialCommunityIcons
               name="account"
@@ -152,7 +188,7 @@ export default function PaymentSuccessScreen() {
         {/* ปุ่มกด */}
         <TouchableOpacity
           className="py-4 rounded-3xl"
-          onPress={() => navigation.navigate("Home")}
+          onPress={handleGoToHome}
           style={{
             backgroundColor: themeColors.bgbtn,
             marginLeft: 30,
@@ -171,8 +207,8 @@ export default function PaymentSuccessScreen() {
       {/* menu bar  */}
       <View style={{ marginTop: "auto" }}>
         <BottomTab
-          onPress={() => navigation.navigate("Home")}
-          onPress2={() => navigation.navigate("History")}
+          onPress={() => navigation.navigate("Home", { uid, access_token })}
+          onPress2={() => navigation.navigate("History", { uid, access_token })}
         />
       </View>
     </SafeAreaView>

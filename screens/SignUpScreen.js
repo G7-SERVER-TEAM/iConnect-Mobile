@@ -30,7 +30,7 @@ export default function SignUpScreen() {
     const route = useRoute();
 
     const createAccountInformation = async (information) => {
-        const ICONNECT_API = "http://10.4.13.48:8081/auth/email/sign-up";
+        const ICONNECT_API = "http://192.168.1.5:8081/auth/email/sign-up";
         try {
           const result = await fetch(ICONNECT_API, {
             method: "POST",

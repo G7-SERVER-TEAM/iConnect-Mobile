@@ -30,10 +30,11 @@ export default function SummaryScreen() {
   const [parkingTime, setParkingTime] = useState("");
   const [currentPrice, setCurrentPrice] = useState("");
   const [transactionId, setTransactionId] = useState("");
+  const [currentRate, setCurrentRate] = useState("");
 
   const handleParkingSummary = (uid, token) => {
     const searchParkingActive = async () => {
-      const ICONNECT_API = `http://10.4.13.48:8082/transaction/progress/${uid}`;
+      const ICONNECT_API = `http://192.168.1.5:8082/transaction/progress/${uid}`;
       const information = {
         status: "ACTIVE",
       };
@@ -82,7 +83,7 @@ export default function SummaryScreen() {
     };
 
     const searchAreaLocation = async (id) => {
-      const ICONNECT_API = `http://10.4.13.48:8082/area/id/${id}`;
+      const ICONNECT_API = `http://192.168.1.5:8082/area/id/${id}`;
       try {
         const result = await fetch(ICONNECT_API, {
           method: "GET",
@@ -115,7 +116,7 @@ export default function SummaryScreen() {
     };
 
     const getCurrentPrice = async (id) => {
-      const ICONNECT_API = `http://10.4.13.48:8082/transaction/price/${id}`;
+      const ICONNECT_API = `http://192.168.1.5:8082/transaction/price/${id}`;
       try {
         const result = await fetch(ICONNECT_API, {
           method: "GET",
@@ -154,7 +155,8 @@ export default function SummaryScreen() {
 
       getCurrentPrice(transaction.result.transaction_id).then((result) => {
         const price = JSON.parse(result);
-        setCurrentPrice(price.result);
+        setCurrentPrice(price.result.totalPrice);
+        setCurrentRate(price.result.currentRate);
       });
 
       setLicense(transaction.result.license_plate);
@@ -173,7 +175,7 @@ export default function SummaryScreen() {
 
   const handlePaymentComplete = () => {
     const updateTransaction = async (transaction_id, access_token) => {
-      const ICONNECT_API = `http://10.4.13.48:8082/transaction/${transaction_id}`;
+      const ICONNECT_API = `http://192.168.1.5:8082/transaction/${transaction_id}`;
       const information = {
         status: "FINISH",
         end_time: updateTime,
@@ -200,7 +202,7 @@ export default function SummaryScreen() {
     };
 
     const createCashPayment = async (transaction_id, access_token) => {
-      const ICONNECT_API = `http://10.4.13.48:8082/transaction/payment/cash/create/${transaction_id}`;
+      const ICONNECT_API = `http://192.168.1.5:8082/transaction/payment/cash/create/${transaction_id}`;
       try {
         const result = await fetch(ICONNECT_API, {
           method: "POST",
@@ -221,19 +223,12 @@ export default function SummaryScreen() {
       }
     };
 
-    updateTransaction(transactionId, access_token).then(result => {
+    updateTransaction(transactionId, access_token).then((result) => {
       console.log(JSON.parse(result));
     });
 
-    createCashPayment(transactionId, access_token).then(result => {
-      console.log(JSON.parse(result));
-      handleBackHome()
-    })
+    navigation.navigate("PaymentDetail", { uid, access_token, transactionId });
   };
-
-  const handleBackHome = () => {
-    navigation.navigate("Home", { uid, access_token });
-  }
 
   return (
     <SafeAreaView
@@ -252,7 +247,9 @@ export default function SummaryScreen() {
         }}
       >
         <View style={{ flexDirection: "row", justifyContent: "start" }}>
-          <TouchableOpacity onPress={() => navigation.navigate("Home", { uid, access_token })}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("Home", { uid, access_token })}
+          >
             <Image
               source={require("../assets/images/WelcomePicture.png")}
               style={{ width: 50, height: 50, marginLeft: 10 }}
@@ -279,7 +276,9 @@ export default function SummaryScreen() {
           <TouchableOpacity
             className="justify-center"
             style={{ marginLeft: "auto" }}
-            onPress={() => navigation.navigate("Notification", { uid, access_token })}
+            onPress={() =>
+              navigation.navigate("Notification", { uid, access_token })
+            }
           >
             <MaterialCommunityIcons
               name="bell"
@@ -290,7 +289,9 @@ export default function SummaryScreen() {
           <TouchableOpacity
             className="justify-center"
             style={{ textAlign: "center", marginLeft: 10 }}
-            onPress={() => navigation.navigate("Profile", { uid, access_token })}
+            onPress={() =>
+              navigation.navigate("Profile", { uid, access_token })
+            }
           >
             <MaterialCommunityIcons
               name="account"
@@ -343,7 +344,7 @@ export default function SummaryScreen() {
                   fontWeight: "bold",
                 }}
               >
-                20BATHS/HOUR
+                {currentRate}BATHS/HOUR
               </Text>
             </View>
             {/* ชื่อสถานที่ */}

@@ -10,9 +10,17 @@ import {
   MaterialCommunityIcons,
 } from "@expo/vector-icons";
 import BottomTab from "../components/bottomTab";
+import { useRoute } from "@react-navigation/native";
 
 export default function QrCodePaymentScreen() {
   const navigation = useNavigation();
+  const route = useRoute();
+
+  const uid = route.params.uid;
+  const access_token = route.params.access_token;
+  const paymentId = route.params.paymentId;
+
+  console.log(`http://192.168.1.5:8082/payment/qrcode/${paymentId}`);
 
   return (
     <SafeAreaView
@@ -31,7 +39,7 @@ export default function QrCodePaymentScreen() {
         }}
       >
         <View style={{ flexDirection: "row", justifyContent: "start" }}>
-          <TouchableOpacity onPress={() => navigation.navigate("Home")}>
+          <TouchableOpacity onPress={() => navigation.navigate("Home", {uid, access_token})}>
             <Image
               source={require("../assets/images/WelcomePicture.png")}
               style={{ width: 50, height: 50, marginLeft: 10 }}
@@ -41,7 +49,7 @@ export default function QrCodePaymentScreen() {
           <TouchableOpacity
             className="justify-center"
             style={{ marginLeft: "auto" }}
-            onPress={() => navigation.navigate("Home")}
+            onPress={() => navigation.navigate("Home", {uid, access_token})}
           >
             <Text
               className="font-bold"
@@ -58,7 +66,7 @@ export default function QrCodePaymentScreen() {
           <TouchableOpacity
             className="justify-center"
             style={{ marginLeft: "auto" }}
-            onPress={() => navigation.navigate("Profile")}
+            onPress={() => navigation.navigate("Notification", {uid, access_token})}
           >
             <MaterialCommunityIcons
               name="bell"
@@ -69,7 +77,7 @@ export default function QrCodePaymentScreen() {
           <TouchableOpacity
             className="justify-center"
             style={{ textAlign: "center", marginLeft: 10 }}
-            onPress={() => navigation.navigate("Profile")}
+            onPress={() => navigation.navigate("Profile", {uid, access_token})}
           >
             <MaterialCommunityIcons
               name="account"
@@ -94,7 +102,7 @@ export default function QrCodePaymentScreen() {
         >
           {/* QR Code Image */}
         <Image
-          source={require("../assets/images/qr_code_image.jpg")}
+          source={{uri: `http://192.168.1.5:8082/payment/qrcode/${paymentId}`}}
           style={{
             width: 350,
             height: 350,
@@ -130,7 +138,7 @@ export default function QrCodePaymentScreen() {
         {/* ปุ่มกด */}
         <TouchableOpacity
           className="py-4 rounded-3xl"
-          onPress={() => navigation.navigate("PaymentSummary")}
+          onPress={() => navigation.navigate("PaymentSummary", {uid, access_token, paymentId})}
           style={{
             backgroundColor: themeColors.bgbtn,
             marginLeft: 25,
@@ -146,32 +154,13 @@ export default function QrCodePaymentScreen() {
             CONTINUE
           </Text>
         </TouchableOpacity>
-
-        <TouchableOpacity
-          className="py-4 rounded-3xl"
-          onPress={() => navigation.navigate("PaymentDetail")}
-          style={{
-            backgroundColor: "black",
-            marginLeft: 25,
-            marginRight: 25,
-            marginTop: 10,
-            
-          }}
-        >
-          <Text
-            className="font-bold text-center text-white"
-            style={{ fontSize: 20 }}
-          >
-            GO BACK
-          </Text>
-        </TouchableOpacity>
         
       </View>
       {/* menu bar  */}
       <View style={{ marginTop: "auto" }}>
         <BottomTab
-          onPress={() => navigation.navigate("Home")}
-          onPress2={() => navigation.navigate("History")}
+          onPress={() => navigation.navigate("Home", {uid, access_token})}
+          onPress2={() => navigation.navigate("History", {uid, access_token})}
         />
       </View>
     </SafeAreaView>

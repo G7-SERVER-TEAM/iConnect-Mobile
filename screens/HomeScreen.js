@@ -38,24 +38,9 @@ export default function HomeScreen() {
   const [area, setArea] = useState("");
   const [parkingTime, setParkingTime] = useState("");
   const [currentPrice, setCurrentPrice] = useState("");
+  const [currentRate, setCurrentRate] = useState("");
 
   const [visible, setVisible] = useState(true);
-
-  // const newsData = [
-  //   {
-  //     id: "1",
-  //     title: "Amazing Thailand Countdown 2024",
-  //     description:
-  //       "ไอคอนสยาม เตรียมเคาต์ดาวน์สะกดโลก “Amazing Thailand Countdown 2024”",
-  //     image: "http://192.168.1.5:8081/news/asset/new1.png",
-  //   },
-  //   {
-  //     id: "2",
-  //     title: "Breaking News 2",
-  //     description: "This is the description of breaking news 2.",
-  //     image: "http://192.168.1.5:8081/news/asset/new1.png",
-  //   },
-  // ];
 
   const handleNews = (uid, access_token) => {
     const searchNews = async () => {
@@ -238,7 +223,8 @@ export default function HomeScreen() {
 
       getCurrentPrice(transaction.result.transaction_id).then((result) => {
         const price = JSON.parse(result);
-        setCurrentPrice(price.result);
+        setCurrentPrice(price.result.totalPrice);
+        setCurrentRate(price.result.currentRate);
       });
 
       setLicense(transaction.result.license_plate);
