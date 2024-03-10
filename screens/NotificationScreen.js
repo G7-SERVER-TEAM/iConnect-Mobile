@@ -13,7 +13,6 @@ export default function NotificationScreen() {
   const route = useRoute();
 
   const uid = route.params.uid;
-  console.log(uid);
   const access_token = route.params.access_token;
 
   const handleLoginHistory = (uid, access_token) => {
@@ -101,7 +100,7 @@ export default function NotificationScreen() {
     const fetchData = async () => {
       try {
         const result = await handleLoginHistory(uid, access_token);
-        setNotifications(result)
+        setNotifications(result.slice().reverse());
       } catch (err) {
         console.error("#2:Error processing login history:", err);
       }

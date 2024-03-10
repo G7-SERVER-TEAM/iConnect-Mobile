@@ -12,41 +12,15 @@ import {
 import BottomTab from "../components/bottomTab";
 import { useRoute } from "@react-navigation/native";
 
-export default function PaymentSuccessScreen() {
+export default function QrCodePaymentScreen() {
   const navigation = useNavigation();
-
   const route = useRoute();
 
   const uid = route.params.uid;
   const access_token = route.params.access_token;
   const paymentId = route.params.paymentId;
 
-  const handleUpdatePaymentStatus = async () => {
-    const ICONNECT_API = `http://192.168.1.5:8082/payment/${paymentId}`;
-    try {
-      const result = await fetch(ICONNECT_API, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${access_token}`,
-        },
-      });
-      if (result.ok) {
-        const responseBody = await result.text();
-        console.log("Succeed!");
-        return responseBody;
-      } else {
-        throw new Error(`Error: ${result.status} - ${result.statusText}`);
-      }
-    } catch (err) {
-      throw err;
-    }
-  }
-
-  const handleGoToHome = () => {
-    handleUpdatePaymentStatus();
-    navigation.navigate("Home", { uid, access_token })
-  }
+  console.log(`http://192.168.1.5:8082/payment/qrcode/${paymentId}`);
 
   return (
     <SafeAreaView
@@ -65,9 +39,7 @@ export default function PaymentSuccessScreen() {
         }}
       >
         <View style={{ flexDirection: "row", justifyContent: "start" }}>
-          <TouchableOpacity
-            onPress={() => navigation.navigate("Home", { uid, access_token })}
-          >
+          <TouchableOpacity onPress={() => navigation.navigate("Home", {uid, access_token})}>
             <Image
               source={require("../assets/images/WelcomePicture.png")}
               style={{ width: 50, height: 50, marginLeft: 10 }}
@@ -87,14 +59,14 @@ export default function PaymentSuccessScreen() {
                 alignContent: "center",
               }}
             >
-              Payment Summary
+              QR Code Payment
             </Text>
           </TouchableOpacity>
 
           <TouchableOpacity
             className="justify-center"
             style={{ marginLeft: "auto" }}
-            onPress={() => navigation.navigate("Profile", { uid, access_token })}
+            onPress={() => navigation.navigate("Notification", {uid, access_token})}
           >
             <MaterialCommunityIcons
               name="bell"
@@ -105,7 +77,7 @@ export default function PaymentSuccessScreen() {
           <TouchableOpacity
             className="justify-center"
             style={{ textAlign: "center", marginLeft: 10 }}
-            onPress={() => navigation.navigate("Profile", { uid, access_token })}
+            onPress={() => navigation.navigate("Profile", {uid, access_token})}
           >
             <MaterialCommunityIcons
               name="account"
@@ -116,29 +88,7 @@ export default function PaymentSuccessScreen() {
       </View>
 
       <View>
-        {/* Checkmark Icon */}
-        <View
-          style={{
-            width: 80,
-            height: 80,
-            borderRadius: 40,
-            backgroundColor: "white",
-            alignItems: "center",
-            justifyContent: "center",
-            marginLeft: "auto",
-            marginRight: "auto",
-            marginTop: 40,
-            zIndex: 1,
-          }}
-        >
-          <MaterialCommunityIcons
-            name="checkbox-marked-circle"
-            style={{
-              color: themeColors.text,
-              fontSize: 80,
-            }}
-          />
-        </View>
+
 
         <View
           style={{
@@ -147,31 +97,31 @@ export default function PaymentSuccessScreen() {
             padding: 10,
             marginLeft: 30,
             marginRight: 30,
-            marginTop: -25,
+            marginTop: 20,
           }}
         >
-          <Text
-            style={{
-              fontSize: 24,
-              fontWeight: "bold",
-              color: themeColors.text,
-              marginTop: 20,
-              textAlign: "center",
-            }}
-          >
-            Thank You!
-          </Text>
+          {/* QR Code Image */}
+        <Image
+          source={{uri: `http://192.168.1.5:8082/payment/qrcode/${paymentId}`}}
+          style={{
+            width: 350,
+            height: 350,
+            alignSelf: "center",
+            marginTop: 15,
+          }}
+        />
 
           <Text
+            className="font-bold"
             style={{
               fontSize: 18,
-              color: "grey",
+              color: themeColors.text,
               textAlign: "center",
               marginTop: 10,
               marginBottom: 20,
             }}
           >
-            Your payment is successful
+            Please Scan QR Code for Payment.
           </Text>
           {/* เส้นใต้ */}
           <View
@@ -188,29 +138,32 @@ export default function PaymentSuccessScreen() {
         {/* ปุ่มกด */}
         <TouchableOpacity
           className="py-4 rounded-3xl"
-          onPress={handleGoToHome}
+          onPress={() => navigation.navigate("PaymentSummary", {uid, access_token, paymentId})}
           style={{
             backgroundColor: themeColors.bgbtn,
-            marginLeft: 30,
-            marginRight: 30,
+            marginLeft: 25,
+            marginRight: 25,
             marginTop: 10,
+            
           }}
         >
           <Text
             className="font-bold text-center text-white"
             style={{ fontSize: 20 }}
           >
-            Go Back to HOME
+            CONTINUE
           </Text>
         </TouchableOpacity>
+        
       </View>
       {/* menu bar  */}
       <View style={{ marginTop: "auto" }}>
         <BottomTab
-          onPress={() => navigation.navigate("Home", { uid, access_token })}
-          onPress2={() => navigation.navigate("History", { uid, access_token })}
+          onPress={() => navigation.navigate("Home", {uid, access_token})}
+          onPress2={() => navigation.navigate("History", {uid, access_token})}
         />
       </View>
     </SafeAreaView>
   );
 }
+

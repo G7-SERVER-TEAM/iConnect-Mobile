@@ -28,7 +28,6 @@ export default function HomeScreen() {
 
   const route = useRoute();
   const uid = route.params.uid;
-  console.log(uid);
   const access_token = route.params.access_token;
 
   const [fname, setFirstName] = useState("");
@@ -39,24 +38,71 @@ export default function HomeScreen() {
   const [area, setArea] = useState("");
   const [parkingTime, setParkingTime] = useState("");
   const [currentPrice, setCurrentPrice] = useState("");
+  const [currentRate, setCurrentRate] = useState("");
 
   const [visible, setVisible] = useState(true);
 
-  const newsData = [
-    {
-      id: "1",
-      title: "Amazing Thailand Countdown 2024",
-      description:
-        "ไอคอนสยาม เตรียมเคาต์ดาวน์สะกดโลก “Amazing Thailand Countdown 2024”",
-      image: "/Users/sittipaksrisawas/Desktop/TestApp/assets/images/new1.jpeg",
-    },
-    {
-      id: "2",
-      title: "Breaking News 2",
-      description: "This is the description of breaking news 2.",
-      image: "/Users/sittipaksrisawas/Desktop/TestApp/assets/images/new1.jpeg",
-    },
-  ];
+  const handleNews = (uid, access_token) => {
+    const searchNews = async () => {
+      const ICONNECT_API = `http://192.168.1.5:8081/news`;
+      try {
+        const result = await fetch(ICONNECT_API, {
+          method: 'GET',
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${access_token}`,
+          }
+        });
+        if (result.ok) {
+          const body = result.text();
+          return body;
+        } else {
+          throw new Error(`Error: ${result.status} - ${result.statusText}`);
+        }
+      } catch (err) {
+        throw err;
+      }
+    }
+
+    const processSearchNews = async () => {
+      try {
+        const result = await searchNews();
+        const data = JSON.parse(result);
+        const newsData = data.result;
+
+        let newsList = [];
+        for (const news of newsData) {
+          newsList.push({
+            ...news,
+            image: news.path,
+          });
+        }
+        return newsList;
+      } catch (err) {
+        console.error("#1:Error processing search news:", err);
+        return [];
+      }
+    };
+
+    const newsList = processSearchNews();
+
+    return newsList;
+  }
+
+  const [newsData, setNewsData] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const result = await handleNews(uid, access_token);
+        setNewsData(result.slice().reverse());
+      } catch (err) {
+        console.error("#2:Error processing search news:", err);
+      }
+    };
+
+    fetchData();
+  }, [uid, access_token]);
 
   const handleParkingStatus = (uid, token) => {
     const searchParkingActive = async () => {
@@ -80,7 +126,7 @@ export default function HomeScreen() {
           throw new Error(`Error: ${result.status} - ${result.statusText}`);
         }
       } catch (err) {
-        setVisible(false)
+        setVisible(false);
         throw err;
       }
     };
@@ -167,7 +213,6 @@ export default function HomeScreen() {
 
       searchAreaLocation(transaction.result.area_id).then((result) => {
         const location = JSON.parse(result);
-        console.log(location)
         setArea(location.result.area_name);
       });
 
@@ -178,7 +223,8 @@ export default function HomeScreen() {
 
       getCurrentPrice(transaction.result.transaction_id).then((result) => {
         const price = JSON.parse(result);
-        setCurrentPrice(price.result);
+        setCurrentPrice(price.result.totalPrice);
+        setCurrentRate(price.result.currentRate);
       });
 
       setLicense(transaction.result.license_plate);
@@ -228,7 +274,6 @@ export default function HomeScreen() {
   profile();
   handleParkingStatus(uid, access_token);
 
-
   const handleQRCode = () => {
     navigation.navigate("ScanQRCode", { uid, access_token });
   };
@@ -241,7 +286,6 @@ export default function HomeScreen() {
     navigation.navigate("History", { uid, access_token });
   };
 
-  console.log(visible)
 
   return (
     <SafeAreaView
@@ -293,7 +337,9 @@ export default function HomeScreen() {
             <MaterialCommunityIcons
               name="bell"
               style={{ color: themeColors.text, fontSize: 25 }}
-              onPress={() => navigation.navigate("Notification", { uid, access_token})}
+              onPress={() =>
+                navigation.navigate("Notification", { uid, access_token })
+              }
             />
           </TouchableOpacity>
 
@@ -326,7 +372,7 @@ export default function HomeScreen() {
         </View>
       </View>
       <ScrollView>
-        {/* <View style={{ marginBottom: 5 }}>
+        <View style={{ marginBottom: 5 }}>
           <Text
             style={{
               fontWeight: "bold",
@@ -355,7 +401,7 @@ export default function HomeScreen() {
               />
             )}
           />
-        </View> */}
+        </View>
 
         <View>
           <Text
@@ -371,7 +417,7 @@ export default function HomeScreen() {
           >
             Parking Status
           </Text>
-          { visible ?
+          {visible ? (
             <TouchableOpacity
               onPress={handleStatusDetail}
               style={{
@@ -418,7 +464,10 @@ export default function HomeScreen() {
               </Text>
 
               <View
-                style={{ justifyContent: "space-between", flexDirection: "row" }}
+                style={{
+                  justifyContent: "space-between",
+                  flexDirection: "row",
+                }}
               >
                 <Text
                   style={{
@@ -443,7 +492,10 @@ export default function HomeScreen() {
               </View>
 
               <View
-                style={{ justifyContent: "space-between", flexDirection: "row" }}
+                style={{
+                  justifyContent: "space-between",
+                  flexDirection: "row",
+                }}
               >
                 <Text
                   style={{
@@ -468,7 +520,10 @@ export default function HomeScreen() {
               </View>
 
               <View
-                style={{ justifyContent: "space-between", flexDirection: "row" }}
+                style={{
+                  justifyContent: "space-between",
+                  flexDirection: "row",
+                }}
               >
                 <Text
                   style={{
@@ -495,11 +550,13 @@ export default function HomeScreen() {
                 </Text>
               </View>
             </TouchableOpacity>
-          : 
-          <View className="flex justify-center items-center h-full">
-            <Text className="text-stone-500 text-lg">You are not currently parking anywhere</Text>
-          </View>
-          }
+          ) : (
+            <View className="flex justify-center items-center h-3/5">
+              <Text className="text-stone-500 text-lg">
+                You are not currently parking anywhere
+              </Text>
+            </View>
+          )}
         </View>
       </ScrollView>
 

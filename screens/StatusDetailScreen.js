@@ -27,10 +27,11 @@ export default function StatusDetailScreen() {
   const [area, setArea] = useState("");
   const [parkingTime, setParkingTime] = useState("");
   const [currentPrice, setCurrentPrice] = useState("");
+  const [currentRate, setCurrentRate] = useState("");
 
   const handleParkingDetail = (uid, token) => {
     const searchParkingActive = async () => {
-      const ICONNECT_API = `http://10.4.13.48:8082/transaction/progress/${uid}`;
+      const ICONNECT_API = `http://192.168.1.5:8082/transaction/progress/${uid}`;
       const information = {
         status: "ACTIVE",
       };
@@ -74,7 +75,7 @@ export default function StatusDetailScreen() {
     };
 
     const searchAreaLocation = async (id) => {
-      const ICONNECT_API = `http://10.4.13.48:8082/area/id/${id}`;
+      const ICONNECT_API = `http://192.168.1.5:8082/area/id/${id}`;
       try {
         const result = await fetch(ICONNECT_API, {
           method: "GET",
@@ -105,7 +106,7 @@ export default function StatusDetailScreen() {
     }
 
     const getCurrentPrice = async (id) => {
-      const ICONNECT_API = `http://10.4.13.48:8082/transaction/price/${id}`;
+      const ICONNECT_API = `http://192.168.1.5:8082/transaction/price/${id}`;
       try {
         const result = await fetch(ICONNECT_API, {
           method: "GET",
@@ -138,7 +139,8 @@ export default function StatusDetailScreen() {
 
       getCurrentPrice(transaction.result.transaction_id).then(result => {
         const price = JSON.parse(result);
-        setCurrentPrice(price.result);
+        setCurrentPrice(price.result.totalPrice);
+        setCurrentRate(price.result.currentRate);
       })
 
       setLicense(transaction.result.license_plate);
@@ -275,7 +277,7 @@ export default function StatusDetailScreen() {
                   fontWeight: "bold",
                 }}
               >
-                20BATHS/HOUR
+                {currentRate}BATHS/HOUR
               </Text>
             </View>
           </View>
