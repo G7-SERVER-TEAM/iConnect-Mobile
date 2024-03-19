@@ -137,19 +137,10 @@ export default function ProfileScreen() {
                 fontSize: 22,
                 color: themeColors.text,
                 fontWeight: "bold",
-                marginBottom: 5,
+                marginBottom: 15,
               }}
             >
               {fname} {lname}
-            </Text>
-            <Text
-              style={{
-                fontSize: 16,
-                color: themeColors.text,
-                marginBottom: 20,
-              }}
-            >
-              Student
             </Text>
           </View>
 

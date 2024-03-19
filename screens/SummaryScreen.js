@@ -227,7 +227,12 @@ export default function SummaryScreen() {
       console.log(JSON.parse(result));
     });
 
-    navigation.navigate("PaymentDetail", { uid, access_token, transactionId });
+    createCashPayment(transactionId, access_token).then(result => {
+      console.log(JSON.parse(result));
+    })
+
+    navigation.navigate("Home", { uid, access_token, transactionId });
+    // navigation.navigate("PaymentDetail", { uid, access_token, transactionId });
   };
 
   return (

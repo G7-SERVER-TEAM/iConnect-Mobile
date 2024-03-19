@@ -51,7 +51,7 @@ export default function PaymentDetailScreen() {
       }
     };
     createCashPayment(transactionId, access_token);
-    navigation.navigate("PaymentSummary", { uid, access_token });
+    navigation.navigate("PaymentSummary", { uid, access_token, paymentId });
   };
 
   const createPromptPay = async (transaction_id, access_token) => {

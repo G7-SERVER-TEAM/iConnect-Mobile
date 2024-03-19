@@ -372,7 +372,7 @@ export default function HomeScreen() {
         </View>
       </View>
       <ScrollView>
-        <View style={{ marginBottom: 5 }}>
+        {/* <View style={{ marginBottom: 5 }}>
           <Text
             style={{
               fontWeight: "bold",
@@ -401,7 +401,7 @@ export default function HomeScreen() {
               />
             )}
           />
-        </View>
+        </View> */}
 
         <View>
           <Text
