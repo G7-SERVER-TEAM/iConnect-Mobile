@@ -167,7 +167,7 @@ export default function LoginScreen() {
           </View>
           {/* Display password error message */}
           {errors.password && (
-            <Text className="text-red-500">{errors.password}</Text>
+            <Text className="text-red-600">{errors.password}</Text>
           )}
 
           <TouchableOpacity
