@@ -44,14 +44,14 @@ export default function HomeScreen() {
 
   const handleNews = (uid, access_token) => {
     const searchNews = async () => {
-      const ICONNECT_API = `http://192.168.1.5:8081/news`;
+      const ICONNECT_API = `http://192.168.1.37:8081/news`;
       try {
         const result = await fetch(ICONNECT_API, {
-          method: 'GET',
+          method: "GET",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${access_token}`,
-          }
+          },
         });
         if (result.ok) {
           const body = result.text();
@@ -62,7 +62,7 @@ export default function HomeScreen() {
       } catch (err) {
         throw err;
       }
-    }
+    };
 
     const processSearchNews = async () => {
       try {
@@ -87,7 +87,7 @@ export default function HomeScreen() {
     const newsList = processSearchNews();
 
     return newsList;
-  }
+  };
 
   const [newsData, setNewsData] = useState([]);
 
@@ -106,7 +106,7 @@ export default function HomeScreen() {
 
   const handleParkingStatus = (uid, token) => {
     const searchParkingActive = async () => {
-      const ICONNECT_API = `http://192.168.1.5:8082/transaction/progress/${uid}`;
+      const ICONNECT_API = `http://192.168.1.37:8082/transaction/progress/${uid}`;
       const information = {
         status: "ACTIVE",
       };
@@ -137,7 +137,7 @@ export default function HomeScreen() {
         year: start_time.getFullYear(),
         month: start_time.getMonth(),
         day: start_time.getDate(),
-        hour: start_time.getHours(),
+        hour: start_time.getHours() - 7,
         minute:
           start_time.getMinutes() < 10
             ? `0${start_time.getMinutes()}`
@@ -151,7 +151,7 @@ export default function HomeScreen() {
     };
 
     const searchAreaLocation = async (id) => {
-      const ICONNECT_API = `http://192.168.1.5:8082/area/id/${id}`;
+      const ICONNECT_API = `http://192.168.1.37:8082/area/id/${id}`;
       try {
         const result = await fetch(ICONNECT_API, {
           method: "GET",
@@ -184,7 +184,7 @@ export default function HomeScreen() {
     };
 
     const getCurrentPrice = async (id) => {
-      const ICONNECT_API = `http://192.168.1.5:8082/transaction/price/${id}`;
+      const ICONNECT_API = `http://192.168.1.37:8082/transaction/price/${id}`;
       try {
         const result = await fetch(ICONNECT_API, {
           method: "GET",
@@ -207,18 +207,24 @@ export default function HomeScreen() {
     searchParkingActive().then((result) => {
       const transaction = JSON.parse(result);
 
+      const UTC7OffsetMilliseconds = 7 * 60 * 60 * 1000;
+
       if (transaction.result.length != 0) setVisible(true);
 
       const start_time = getTimeDescription(transaction.result.start_time);
+      console.log(start_time.hour);
 
       searchAreaLocation(transaction.result.area_id).then((result) => {
         const location = JSON.parse(result);
         setArea(location.result.area_name);
       });
 
+      const endTimeMilliseconds = new Date().getTime();
+      const end_time = new Date(endTimeMilliseconds + UTC7OffsetMilliseconds);
+
       const currentTime = convertCurrentTimeFormat(
         new Date(transaction.result.start_time),
-        new Date()
+        end_time
       );
 
       getCurrentPrice(transaction.result.transaction_id).then((result) => {
@@ -238,7 +244,7 @@ export default function HomeScreen() {
   };
 
   const searchUserAccount = async (uid, access_token) => {
-    const ICONNECT_API = `http://192.168.1.5:8080/user/id/${uid}`;
+    const ICONNECT_API = `http://192.168.1.37:8080/user/id/${uid}`;
     try {
       const result = await fetch(ICONNECT_API, {
         method: "GET",
@@ -285,7 +291,6 @@ export default function HomeScreen() {
   const handleHistory = () => {
     navigation.navigate("History", { uid, access_token });
   };
-
 
   return (
     <SafeAreaView
@@ -372,7 +377,7 @@ export default function HomeScreen() {
         </View>
       </View>
       <ScrollView>
-        {/* <View style={{ marginBottom: 5 }}>
+        <View style={{ marginBottom: 5 }}>
           <Text
             style={{
               fontWeight: "bold",
@@ -401,7 +406,7 @@ export default function HomeScreen() {
               />
             )}
           />
-        </View> */}
+        </View>
 
         <View>
           <Text

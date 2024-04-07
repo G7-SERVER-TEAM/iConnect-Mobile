@@ -7,7 +7,7 @@ const NewsCard = ({ news, onPress }) => {
   return (
     <TouchableOpacity onPress={onPress}>
       <View style={styles.cardContainer}>
-        <Image source={{ uri: `http://192.168.1.5:8081${news.image}`}} style={styles.cardImage} />
+        <Image source={{ uri: `http://192.168.1.37:8081${news.image}`}} style={styles.cardImage} />
         <View style={styles.cardContent}>
           <Text style={styles.cardTitle}>{news.title}</Text>
           <Text style={styles.cardDescription}>{news.description}</Text>

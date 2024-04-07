@@ -31,7 +31,7 @@ export default function StatusDetailScreen() {
 
   const handleParkingDetail = (uid, token) => {
     const searchParkingActive = async () => {
-      const ICONNECT_API = `http://192.168.1.5:8082/transaction/progress/${uid}`;
+      const ICONNECT_API = `http://192.168.1.37:8082/transaction/progress/${uid}`;
       const information = {
         status: "ACTIVE",
       };
@@ -61,7 +61,7 @@ export default function StatusDetailScreen() {
         year: start_time.getFullYear(),
         month: start_time.getMonth(),
         day: start_time.getDate(),
-        hour: start_time.getHours(),
+        hour: start_time.getHours() - 7,
         minute:
           start_time.getMinutes() < 10
             ? `0${start_time.getMinutes()}`
@@ -75,7 +75,7 @@ export default function StatusDetailScreen() {
     };
 
     const searchAreaLocation = async (id) => {
-      const ICONNECT_API = `http://192.168.1.5:8082/area/id/${id}`;
+      const ICONNECT_API = `http://192.168.1.37:8082/area/id/${id}`;
       try {
         const result = await fetch(ICONNECT_API, {
           method: "GET",
@@ -106,7 +106,7 @@ export default function StatusDetailScreen() {
     }
 
     const getCurrentPrice = async (id) => {
-      const ICONNECT_API = `http://192.168.1.5:8082/transaction/price/${id}`;
+      const ICONNECT_API = `http://192.168.1.37:8082/transaction/price/${id}`;
       try {
         const result = await fetch(ICONNECT_API, {
           method: "GET",
@@ -128,6 +128,7 @@ export default function StatusDetailScreen() {
 
     searchParkingActive().then((result) => {
       const transaction = JSON.parse(result);
+      const UTC7OffsetMilliseconds = 7 * 60 * 60 * 1000;
       const start_time = getTimeDescription(transaction.result.start_time);
 
       searchAreaLocation(transaction.result.area_id).then(result => {
@@ -135,7 +136,13 @@ export default function StatusDetailScreen() {
         setArea(location.result.area_name);
       });
 
-      const currentTime = convertCurrentTimeFormat(new Date(transaction.result.start_time), new Date());
+      const endTimeMilliseconds = new Date().getTime();
+      const end_time = new Date(endTimeMilliseconds + UTC7OffsetMilliseconds);
+
+      const currentTime = convertCurrentTimeFormat(
+        new Date(transaction.result.start_time),
+        end_time
+      );
 
       getCurrentPrice(transaction.result.transaction_id).then(result => {
         const price = JSON.parse(result);
