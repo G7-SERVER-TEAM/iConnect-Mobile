@@ -44,7 +44,7 @@ export default function HomeScreen() {
 
   const handleNews = (uid, access_token) => {
     const searchNews = async () => {
-      const ICONNECT_API = `http://192.168.1.5:8081/news`;
+      const ICONNECT_API = `http://192.168.1.37:8081/news`;
       try {
         const result = await fetch(ICONNECT_API, {
           method: 'GET',
@@ -106,7 +106,7 @@ export default function HomeScreen() {
 
   const handleParkingStatus = (uid, token) => {
     const searchParkingActive = async () => {
-      const ICONNECT_API = `http://192.168.1.5:8082/transaction/progress/${uid}`;
+      const ICONNECT_API = `http://192.168.1.37:8082/transaction/progress/${uid}`;
       const information = {
         status: "ACTIVE",
       };
@@ -151,7 +151,7 @@ export default function HomeScreen() {
     };
 
     const searchAreaLocation = async (id) => {
-      const ICONNECT_API = `http://192.168.1.5:8082/area/id/${id}`;
+      const ICONNECT_API = `http://192.168.1.37:8082/area/id/${id}`;
       try {
         const result = await fetch(ICONNECT_API, {
           method: "GET",
@@ -184,7 +184,7 @@ export default function HomeScreen() {
     };
 
     const getCurrentPrice = async (id) => {
-      const ICONNECT_API = `http://192.168.1.5:8082/transaction/price/${id}`;
+      const ICONNECT_API = `http://192.168.1.37:8082/transaction/price/${id}`;
       try {
         const result = await fetch(ICONNECT_API, {
           method: "GET",
@@ -238,7 +238,7 @@ export default function HomeScreen() {
   };
 
   const searchUserAccount = async (uid, access_token) => {
-    const ICONNECT_API = `http://192.168.1.5:8080/user/id/${uid}`;
+    const ICONNECT_API = `http://192.168.1.37:8080/user/id/${uid}`;
     try {
       const result = await fetch(ICONNECT_API, {
         method: "GET",
@@ -372,7 +372,7 @@ export default function HomeScreen() {
         </View>
       </View>
       <ScrollView>
-        {/* <View style={{ marginBottom: 5 }}>
+        <View style={{ marginBottom: 5 }}>
           <Text
             style={{
               fontWeight: "bold",
@@ -401,7 +401,7 @@ export default function HomeScreen() {
               />
             )}
           />
-        </View> */}
+        </View>
 
         <View>
           <Text

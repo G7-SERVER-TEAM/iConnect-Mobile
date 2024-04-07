@@ -34,7 +34,7 @@ export default function SummaryScreen() {
 
   const handleParkingSummary = (uid, token) => {
     const searchParkingActive = async () => {
-      const ICONNECT_API = `http://192.168.1.5:8082/transaction/progress/${uid}`;
+      const ICONNECT_API = `http://192.168.1.37:8082/transaction/progress/${uid}`;
       const information = {
         status: "ACTIVE",
       };
@@ -83,7 +83,7 @@ export default function SummaryScreen() {
     };
 
     const searchAreaLocation = async (id) => {
-      const ICONNECT_API = `http://192.168.1.5:8082/area/id/${id}`;
+      const ICONNECT_API = `http://192.168.1.37:8082/area/id/${id}`;
       try {
         const result = await fetch(ICONNECT_API, {
           method: "GET",
@@ -116,7 +116,7 @@ export default function SummaryScreen() {
     };
 
     const getCurrentPrice = async (id) => {
-      const ICONNECT_API = `http://192.168.1.5:8082/transaction/price/${id}`;
+      const ICONNECT_API = `http://192.168.1.37:8082/transaction/price/${id}`;
       try {
         const result = await fetch(ICONNECT_API, {
           method: "GET",
@@ -175,7 +175,7 @@ export default function SummaryScreen() {
 
   const handlePaymentComplete = () => {
     const updateTransaction = async (transaction_id, access_token) => {
-      const ICONNECT_API = `http://192.168.1.5:8082/transaction/${transaction_id}`;
+      const ICONNECT_API = `http://192.168.1.37:8082/transaction/${transaction_id}`;
       const information = {
         status: "FINISH",
         end_time: updateTime,
@@ -202,7 +202,7 @@ export default function SummaryScreen() {
     };
 
     const createCashPayment = async (transaction_id, access_token) => {
-      const ICONNECT_API = `http://192.168.1.5:8082/transaction/payment/cash/create/${transaction_id}`;
+      const ICONNECT_API = `http://192.168.1.37:8082/transaction/payment/cash/create/${transaction_id}`;
       try {
         const result = await fetch(ICONNECT_API, {
           method: "POST",

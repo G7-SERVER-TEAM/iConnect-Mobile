@@ -30,7 +30,7 @@ export default function PaymentDetailScreen() {
 
   const handlePaymentWithCash = () => {
     const createCashPayment = async (transaction_id, access_token) => {
-      const ICONNECT_API = `http://192.168.1.5:8082/transaction/payment/cash/create/${transaction_id}`;
+      const ICONNECT_API = `http://192.168.1.37:8082/transaction/payment/cash/create/${transaction_id}`;
       try {
         const result = await fetch(ICONNECT_API, {
           method: "POST",
@@ -55,7 +55,7 @@ export default function PaymentDetailScreen() {
   };
 
   const createPromptPay = async (transaction_id, access_token) => {
-    const ICONNECT_API = `http://192.168.1.5:8082/transaction/payment/create/${transaction_id}`;
+    const ICONNECT_API = `http://192.168.1.37:8082/transaction/payment/create/${transaction_id}`;
     try {
       const result = await fetch(ICONNECT_API, {
         method: "POST",
