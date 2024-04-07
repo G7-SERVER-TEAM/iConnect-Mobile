@@ -64,7 +64,7 @@ export default function SummaryScreen() {
         year: start_time.getFullYear(),
         month: start_time.getMonth(),
         day: start_time.getDate(),
-        hour: start_time.getHours(),
+        hour: start_time.getHours() - 7,
         minute:
           start_time.getMinutes() < 10
             ? `0${start_time.getMinutes()}`
@@ -145,7 +145,9 @@ export default function SummaryScreen() {
         setArea(location.result.area_name);
       });
 
-      const end_time = new Date();
+      const UTC7OffsetMilliseconds = 7 * 60 * 60 * 1000;
+      const endTimeMilliseconds = new Date().getTime();
+      const end_time = new Date(endTimeMilliseconds + UTC7OffsetMilliseconds);
 
       const currentTime = convertCurrentTimeFormat(
         new Date(transaction.result.start_time),

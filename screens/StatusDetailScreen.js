@@ -61,7 +61,7 @@ export default function StatusDetailScreen() {
         year: start_time.getFullYear(),
         month: start_time.getMonth(),
         day: start_time.getDate(),
-        hour: start_time.getHours(),
+        hour: start_time.getHours() - 7,
         minute:
           start_time.getMinutes() < 10
             ? `0${start_time.getMinutes()}`
@@ -128,6 +128,7 @@ export default function StatusDetailScreen() {
 
     searchParkingActive().then((result) => {
       const transaction = JSON.parse(result);
+      const UTC7OffsetMilliseconds = 7 * 60 * 60 * 1000;
       const start_time = getTimeDescription(transaction.result.start_time);
 
       searchAreaLocation(transaction.result.area_id).then(result => {
@@ -135,7 +136,13 @@ export default function StatusDetailScreen() {
         setArea(location.result.area_name);
       });
 
-      const currentTime = convertCurrentTimeFormat(new Date(transaction.result.start_time), new Date());
+      const endTimeMilliseconds = new Date().getTime();
+      const end_time = new Date(endTimeMilliseconds + UTC7OffsetMilliseconds);
+
+      const currentTime = convertCurrentTimeFormat(
+        new Date(transaction.result.start_time),
+        end_time
+      );
 
       getCurrentPrice(transaction.result.transaction_id).then(result => {
         const price = JSON.parse(result);

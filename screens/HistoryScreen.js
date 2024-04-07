@@ -62,7 +62,7 @@ const HistoryScreen = () => {
           currentTime.getDate() < 10
             ? `0${currentTime.getDate()}`
             : currentTime.getDate(),
-        hour: currentTime.getHours(),
+        hour: currentTime.getHours() - 7,
         minute:
           currentTime.getMinutes() < 10
             ? `0${currentTime.getMinutes()}`
