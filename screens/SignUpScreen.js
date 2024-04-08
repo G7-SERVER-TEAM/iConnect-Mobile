@@ -213,9 +213,9 @@ export default function SignUpScreen() {
             placeholder="Email"
             onChangeText={setEmail}
           />
-          {/* {errors.email && (
+          {errors.email && (
             <Text className="text-red-500 m-0">{errors.email}</Text>
-          )} */}
+          )}
           <View
             className="p-4 bg-gray-100 text-gray-700 rounded-2xl m-0"
             style={{ flexDirection: "row" }}
@@ -234,9 +234,9 @@ export default function SignUpScreen() {
               onPress={toggleShowPassword1}
             />
           </View>
-          {/* {errors.password1 && (
+          {errors.password1 && (
             <Text className="text-red-500 m-0">{errors.password1}</Text>
-          )} */}
+          )}
           <View
             className="p-4 bg-gray-100 text-gray-700 rounded-2xl m-0"
             style={{ flexDirection: "row" }}
@@ -255,9 +255,9 @@ export default function SignUpScreen() {
               onPress={toggleShowPassword2}
             />
           </View>
-          {/* {errors.password2 && (
+          {errors.password2 && (
             <Text className="text-red-500 m-0">{errors.password2}</Text>
-          )} */}
+          )}
           <TouchableOpacity
             className="py-4 rounded-3xl"
             onPress={handleCreateAccount}
