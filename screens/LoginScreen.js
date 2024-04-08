@@ -143,9 +143,9 @@ export default function LoginScreen() {
             onChangeText={setEmail}
           />
           {/* Display email error message */}
-          {errors.email && (
+          {/* {errors.email && (
             <Text className="text-red-500 m-0">{errors.email}</Text>
-          )}
+          )} */}
 
           <View
             className="p-4 bg-gray-100 text-gray-700 rounded-2xl m-0"
@@ -166,9 +166,9 @@ export default function LoginScreen() {
             />
           </View>
           {/* Display password error message */}
-          {errors.password && (
+          {/* {errors.password && (
             <Text className="text-red-600">{errors.password}</Text>
-          )}
+          )} */}
 
           <TouchableOpacity
             className="py-4 rounded-3xl"

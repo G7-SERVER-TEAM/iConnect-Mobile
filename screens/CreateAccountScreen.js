@@ -223,33 +223,33 @@ export default function CreateAccountScreen() {
               placeholder="Firstname"
               onChangeText={(newFirstName) => setFirstName(newFirstName)}
             />
-            {errors.firstName && (
+            {/* {errors.firstName && (
               <Text className="text-red-500 m-0">{errors.firstName}</Text>
-            )}
+            )} */}
             <TextInput
               className="p-4 bg-gray-100 text-gray-700 rounded-2xl m-0"
               placeholder="Lastname"
               onChangeText={(newLastName) => setLastName(newLastName)}
             />
-            {errors.lastName && (
+            {/* {errors.lastName && (
               <Text className="text-red-500 m-0">{errors.lastName}</Text>
-            )}
+            )} */}
             <TextInput
               className="p-4 bg-gray-100 text-gray-700 rounded-2xl m-0"
               placeholder="Email"
               onChangeText={(newEmail) => setEmail(newEmail)}
             />
-            {errors.email && (
+            {/* {errors.email && (
               <Text className="text-red-500 m-0">{errors.email}</Text>
-            )}
+            )} */}
             <TextInput
               className="p-4 bg-gray-100 text-gray-700 rounded-2xl m-0"
               placeholder="Phone Number"
               onChangeText={(newPhone) => setPhone(newPhone)}
             />
-            {errors.phone && (
+            {/* {errors.phone && (
               <Text className="text-red-500 m-0">{errors.phone}</Text>
-            )}
+            )} */}
 
             <TouchableOpacity
               className="py-4 rounded-3xl"
