@@ -132,12 +132,14 @@ export default function HomeScreen() {
     };
 
     const getTimeDescription = (time) => {
-      const start_time = new Date(time);
+      const UTC7OffsetMilliseconds = 7 * 60 * 60 * 1000;
+      const startTimeMilliseconds = new Date(time).getTime();
+      const start_time = new Date(startTimeMilliseconds - UTC7OffsetMilliseconds);
       return {
         year: start_time.getFullYear(),
         month: start_time.getMonth(),
         day: start_time.getDate(),
-        hour: start_time.getHours() - 7,
+        hour: start_time.getHours(),
         minute:
           start_time.getMinutes() < 10
             ? `0${start_time.getMinutes()}`
@@ -212,7 +214,6 @@ export default function HomeScreen() {
       if (transaction.result.length != 0) setVisible(true);
 
       const start_time = getTimeDescription(transaction.result.start_time);
-      console.log(start_time.hour);
 
       searchAreaLocation(transaction.result.area_id).then((result) => {
         const location = JSON.parse(result);

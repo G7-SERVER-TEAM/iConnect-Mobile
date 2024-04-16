@@ -51,7 +51,9 @@ const HistoryScreen = () => {
     };
 
     const getTimeDescription = (time) => {
-      const currentTime = new Date(time);
+      const UTC7OffsetMilliseconds = 7 * 60 * 60 * 1000;
+      const startTimeMilliseconds = new Date(time).getTime();
+      const currentTime = new Date(startTimeMilliseconds - UTC7OffsetMilliseconds);
       return {
         year: currentTime.getFullYear(),
         month:
@@ -62,7 +64,7 @@ const HistoryScreen = () => {
           currentTime.getDate() < 10
             ? `0${currentTime.getDate()}`
             : currentTime.getDate(),
-        hour: currentTime.getHours() - 7,
+        hour: currentTime.getHours(),
         minute:
           currentTime.getMinutes() < 10
             ? `0${currentTime.getMinutes()}`
