@@ -104,7 +104,7 @@ export default function SignUpScreen() {
   };
 
   const createAccountInformation = async (information) => {
-    const ICONNECT_API = "http://192.168.1.37:8081/auth/email/sign-up";
+    const ICONNECT_API = "http://10.4.13.158:8081/auth/email/sign-up";
     try {
       const result = await fetch(ICONNECT_API, {
         method: "POST",
@@ -125,7 +125,7 @@ export default function SignUpScreen() {
   };
 
   const checkEmailForUse = async (email) => {
-    const ICONNECT_API = `http://192.168.1.37:8081/account/email/${email}`;
+    const ICONNECT_API = `http://10.4.13.158:8081/account/email/${email}`;
     try {
       const result = await fetch(ICONNECT_API, {
         method: "GET",

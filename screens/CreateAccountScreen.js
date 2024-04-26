@@ -86,7 +86,7 @@ export default function CreateAccountScreen() {
   };
 
   const checkEmailForUse = async (email) => {
-    const ICONNECT_API = `http://192.168.1.37:8081/account/email/${email}`;
+    const ICONNECT_API = `http://10.4.13.158:8081/account/email/${email}`;
     try {
       const result = await fetch(ICONNECT_API, {
         method: "GET",
@@ -106,7 +106,7 @@ export default function CreateAccountScreen() {
   };
 
   const checkPhoneNumberForUse = async (phone) => {
-    const ICONNECT_API = `http://192.168.1.37:8080/user/phone/${phone}`;
+    const ICONNECT_API = `http://10.4.13.158:8080/user/phone/${phone}`;
     try {
       const result = await fetch(ICONNECT_API, {
         method: "GET",
@@ -126,7 +126,7 @@ export default function CreateAccountScreen() {
   };
 
   const createUserInformation = async (information) => {
-    const ICONNECT_API = "http://192.168.1.37:8080/user/profile/create";
+    const ICONNECT_API = "http://10.4.13.158:8080/user/profile/create";
     try {
       const result = await fetch(ICONNECT_API, {
         method: "POST",
