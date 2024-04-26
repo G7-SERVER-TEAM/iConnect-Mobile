@@ -16,7 +16,7 @@ const HistoryScreen = () => {
 
   const handleParkingHistory = (uid, access_token) => {
     const searchParkingHistory = async () => {
-      const ICONNECT_API = `http://192.168.1.37:8082/transaction/history/${uid}`;
+      const ICONNECT_API = `http://10.4.13.158:8082/transaction/history/${uid}`;
       const information = {
         status: "FINISH",
       };
@@ -51,7 +51,9 @@ const HistoryScreen = () => {
     };
 
     const getTimeDescription = (time) => {
-      const currentTime = new Date(time);
+      const UTC7OffsetMilliseconds = 7 * 60 * 60 * 1000;
+      const startTimeMilliseconds = new Date(time).getTime();
+      const currentTime = new Date(startTimeMilliseconds - UTC7OffsetMilliseconds);
       return {
         year: currentTime.getFullYear(),
         month:
@@ -62,7 +64,7 @@ const HistoryScreen = () => {
           currentTime.getDate() < 10
             ? `0${currentTime.getDate()}`
             : currentTime.getDate(),
-        hour: currentTime.getHours() - 7,
+        hour: currentTime.getHours(),
         minute:
           currentTime.getMinutes() < 10
             ? `0${currentTime.getMinutes()}`
@@ -76,7 +78,7 @@ const HistoryScreen = () => {
     };
 
     const searchAreaLocation = async (id) => {
-      const ICONNECT_API = `http://192.168.1.37:8082/area/id/${id}`;
+      const ICONNECT_API = `http://10.4.13.158:8082/area/id/${id}`;
       try {
         const result = await fetch(ICONNECT_API, {
           method: "GET",
@@ -109,7 +111,7 @@ const HistoryScreen = () => {
     };
 
     const getCurrentPrice = async (id) => {
-      const ICONNECT_API = `http://192.168.1.37:8082/transaction/price/complete/${id}`;
+      const ICONNECT_API = `http://10.4.13.158:8082/transaction/price/complete/${id}`;
       try {
         const result = await fetch(ICONNECT_API, {
           method: "GET",

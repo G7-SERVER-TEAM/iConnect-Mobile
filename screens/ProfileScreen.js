@@ -28,7 +28,7 @@ export default function ProfileScreen() {
   const [lname, setLastName] = useState("")
 
   const searchUserAccount = async (uid, access_token) => {
-    const ICONNECT_API = `http://192.168.1.37:8080/user/id/${uid}`;
+    const ICONNECT_API = `http://10.4.13.158:8080/user/id/${uid}`;
     try {
       const result = await fetch(ICONNECT_API, {
         method: "GET",
