@@ -20,7 +20,7 @@ export default function QrCodePaymentScreen() {
   const access_token = route.params.access_token;
   const paymentId = route.params.paymentId;
 
-  console.log(`http://192.168.1.37:8082/payment/qrcode/${paymentId}`);
+  console.log(`http://10.4.13.158:8082/payment/qrcode/${paymentId}`);
 
   return (
     <SafeAreaView
@@ -102,7 +102,7 @@ export default function QrCodePaymentScreen() {
         >
           {/* QR Code Image */}
         <Image
-          source={{uri: `http://192.168.1.37:8082/payment/qrcode/${paymentId}`}}
+          source={{uri: `http://10.4.13.158:8082/payment/qrcode/${paymentId}`}}
           style={{
             width: 350,
             height: 350,

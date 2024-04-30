@@ -22,7 +22,7 @@ export default function PaymentSuccessScreen() {
   const paymentId = route.params.paymentId;
 
   const handleUpdatePaymentStatus = async () => {
-    const ICONNECT_API = `http://192.168.1.37:8082/payment/${paymentId}`;
+    const ICONNECT_API = `http://10.4.13.158:8082/payment/${paymentId}`;
     try {
       const result = await fetch(ICONNECT_API, {
         method: "PATCH",

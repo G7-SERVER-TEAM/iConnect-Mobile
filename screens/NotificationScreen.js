@@ -17,7 +17,7 @@ export default function NotificationScreen() {
 
   const handleLoginHistory = (uid, access_token) => {
     const searchHistory = async () => {
-      const ICONNECT_API = `http://192.168.1.37:8081/account/uid/${uid}`;
+      const ICONNECT_API = `http://10.4.13.158:8081/account/uid/${uid}`;
       try {
         const result = await fetch(ICONNECT_API, {
           method: "GET",
