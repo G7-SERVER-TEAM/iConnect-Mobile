@@ -378,37 +378,6 @@ export default function HomeScreen() {
         </View>
       </View>
       <ScrollView>
-        <View style={{ marginBottom: 5 }}>
-          <Text
-            style={{
-              fontWeight: "bold",
-              color: themeColors.text,
-              fontSize: 20,
-              alignSelf: "flex-start",
-              marginTop: 20,
-              marginBottom: 10,
-              marginLeft: 25,
-            }}
-          >
-            News
-          </Text>
-          <FlatList
-            style={{ marginLeft: 25 }}
-            data={newsData}
-            keyExtractor={(item) => item.id}
-            horizontal
-            showsHorizontalScrollIndicator={false} // Optional: hide horizontal scroll indicator
-            renderItem={({ item }) => (
-              <NewsCard
-                news={item}
-                onPress={() =>
-                  navigation.navigate("NewsDetail", { news: item })
-                }
-              />
-            )}
-          />
-        </View>
-
         <View>
           <Text
             style={{
