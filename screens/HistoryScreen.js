@@ -189,7 +189,7 @@ const HistoryScreen = () => {
     const fetchData = async () => {
       try {
         const result = await handleParkingHistory(uid, access_token);
-        setHistoryParkingList(result);
+        setHistoryParkingList(result.slice().reverse());
       } catch (error) {
         console.error("Error fetching parking history:", error);
       }
